@@ -14,6 +14,9 @@
   --cabinet-2: #0f0d0b;
   --felt-green: #1c2a22;
   --felt-green-2: #0d1611;
+  --badge-bg: radial-gradient(circle at 34% 26%, #2a2118, #0f0d0b);
+  --badge-ink: #e4c584;
+  --guilloche: rgba(201, 161, 90, .5);
   --radius-lg: 18px;
   --radius-md: 12px;
   --radius-sm: 8px;
@@ -36,6 +39,9 @@
   --gold-text: #7a5322;
   --shadow-1: 0 1px 2px rgba(60,45,20,.08), 0 8px 20px rgba(60,45,20,.08);
   --shadow-2: 0 2px 6px rgba(60,45,20,.1), 0 16px 32px rgba(60,45,20,.12);
+  --badge-bg: linear-gradient(155deg, #e8dcc4, #cdb894);
+  --badge-ink: #6b4718;
+  --guilloche: rgba(122, 83, 34, .5);
 }
 
 @media (prefers-color-scheme: light) {
@@ -52,6 +58,9 @@
     --gold-text: #7a5322;
     --shadow-1: 0 1px 2px rgba(60,45,20,.08), 0 8px 20px rgba(60,45,20,.08);
     --shadow-2: 0 2px 6px rgba(60,45,20,.1), 0 16px 32px rgba(60,45,20,.12);
+    --badge-bg: linear-gradient(155deg, #e8dcc4, #cdb894);
+    --badge-ink: #6b4718;
+    --guilloche: rgba(122, 83, 34, .5);
   }
 }
 
@@ -72,11 +81,18 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; margin: 0; }
 button { font-family: inherit; }
 
 /* ---------- header ---------- */
+/* The header sits on a reeded edge — the fine milling cut into a coin's rim,
+   originally to make clipping detectable. Here it just marks the boundary. */
 .site-header {
   position: sticky; top: 0; z-index: 20;
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--panel-border);
+}
+.site-header::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 4px;
+  background-image: repeating-linear-gradient(90deg, var(--gold) 0 1px, transparent 1px 4px);
+  opacity: .22; pointer-events: none;
 }
 .header-row { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
@@ -95,7 +111,20 @@ button { font-family: inherit; }
 .theme-toggle svg { width: 16px; height: 16px; }
 
 /* ---------- hero ---------- */
-.hero { padding: 56px 0 28px; text-align: center; }
+/* Behind the title, a guilloché rosette — the engine-turned figure cut on a
+   rose lathe, the ornamental language of coin dies and security printing
+   since the 18th century. Drawn live in app.js from a hypotrochoid, the same
+   curve the lathe traces mechanically. */
+.hero { padding: 56px 0 28px; text-align: center; position: relative; }
+.hero-guilloche {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: min(560px, 92vw); height: min(560px, 92vw); pointer-events: none; z-index: 0;
+  color: var(--guilloche); opacity: .16;
+  -webkit-mask-image: radial-gradient(circle, #000 42%, transparent 72%);
+  mask-image: radial-gradient(circle, #000 42%, transparent 72%);
+}
+.hero-guilloche path { fill: none; stroke: currentColor; stroke-width: .55; vector-effect: non-scaling-stroke; }
+.hero > h1, .hero > p { position: relative; z-index: 1; }
 .hero h1 { font-size: clamp(2.1rem, 4vw, 3rem); color: var(--ink); }
 .hero h1 em { font-style: normal; color: var(--gold-text); }
 .hero p { max-width: 640px; margin: 14px auto 0; color: var(--ink-dim); font-size: 1.05rem; }
@@ -155,8 +184,90 @@ button { font-family: inherit; }
 .badge-name { font-size: .88rem; font-weight: 600; line-height: 1.25; display: block; }
 .badge-era { font-size: .72rem; color: var(--ink-faint); margin-top: 2px; display: block; }
 
+/* ---------- tile badge (flagless countries) ---------- */
+.tile-badge {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-weight: 700; font-size: 1.7rem; letter-spacing: .06em;
+  color: var(--badge-ink); background: var(--badge-bg);
+}
+
 /* ---------- empty state ---------- */
 .empty { text-align: center; padding: 60px 20px; color: var(--ink-faint); }
+
+/* ---------- breadcrumbs ---------- */
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 28px 0 0; font-size: .82rem; }
+.crumbs a { color: var(--ink-dim); text-decoration: none; }
+.crumbs a:hover { color: var(--gold-text); text-decoration: underline; }
+.crumbs [aria-current] { color: var(--gold-text); font-weight: 600; }
+.crumb-sep { color: var(--ink-faint); opacity: .5; }
+
+/* ---------- issuer grid ---------- */
+.issuer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 56px; }
+.issuer-tile {
+  display: flex; gap: 16px; align-items: flex-start; text-decoration: none; color: inherit;
+  background: var(--panel); border: 1px solid var(--panel-border); border-radius: var(--radius-md);
+  padding: 18px; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.issuer-tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-1); border-color: var(--gold); }
+.issuer-flag, .issuer-badge {
+  flex: none; width: 60px; height: 44px; border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--panel-border); display: block;
+}
+.issuer-flag img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.issuer-badge {
+  display: flex; align-items: center; justify-content: center; border-color: var(--gold);
+  background: var(--badge-bg);
+  font-family: var(--serif); font-weight: 700; color: var(--badge-ink); font-size: 1.05rem; letter-spacing: .04em;
+}
+.issuer-body { display: block; min-width: 0; }
+.issuer-name { display: block; font-family: var(--serif); font-size: 1.2rem; font-weight: 600; line-height: 1.2; }
+.issuer-meta { display: block; font-size: .76rem; color: var(--gold-text); margin-top: 3px; letter-spacing: .02em; }
+.issuer-note { display: block; font-size: .82rem; color: var(--ink-dim); margin-top: 8px; line-height: 1.5; }
+
+/* ---------- tray bar + sort ---------- */
+.tray-bar { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 44px 0 4px; }
+.tray-bar .section-title.tray-title { margin: 0; }
+.sorts { display: flex; gap: 2px; background: var(--panel); border: 1px solid var(--panel-border); border-radius: 999px; padding: 3px; }
+.sort-btn {
+  border: none; background: none; color: var(--ink-dim); font-size: .78rem; padding: 6px 14px;
+  border-radius: 999px; cursor: pointer; transition: background .15s, color .15s; white-space: nowrap;
+}
+.sort-btn:hover { color: var(--ink); }
+.sort-btn.active { background: var(--gold); color: var(--on-amber, #171112); font-weight: 600; }
+:root[data-theme="light"] .sort-btn.active { color: #fff; }
+
+/* ---------- tray (one ruling authority) ---------- */
+.tray { margin-top: 22px; }
+.tray-head {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  padding-bottom: 9px; margin-bottom: 18px; border-bottom: 1px solid var(--panel-border);
+}
+.tray-head h3 { font-size: 1.15rem; font-weight: 600; }
+.tray-era { font-size: .78rem; color: var(--gold-text); }
+.tray-house { font-size: .74rem; color: var(--ink-faint); font-style: italic; }
+.tray-count { margin-left: auto; font-size: .74rem; color: var(--ink-faint); }
+
+/* ---------- coin card additions ---------- */
+.coin-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.coin-head .coin-year { margin-left: auto; }
+.coin-specs { display: flex; flex-wrap: wrap; gap: 5px; margin: 10px 0 0; padding: 0; }
+.coin-specs dd {
+  margin: 0; font-size: .68rem; color: var(--ink-dim); background: var(--bg-elevated);
+  border: 1px solid var(--panel-border); border-radius: 4px; padding: 2px 7px; line-height: 1.5;
+}
+.coin-foot { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 11px; }
+.coin-grade {
+  font-size: .66rem; font-weight: 700; letter-spacing: .06em; color: var(--gold-text);
+  border: 1px solid var(--gold); border-radius: 3px; padding: 1px 6px;
+}
+.coin-ref { font-size: .68rem; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.coin-foot .coin-source { margin-top: 0; margin-left: auto; }
+
+/* ---------- awaiting photography ---------- */
+.coin-stage.is-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: default; }
+.coin-ghost { width: 42%; height: auto; fill: none; stroke: var(--gold); stroke-width: 2.5; opacity: .34; }
+.coin-pending { font-size: .68rem; color: var(--ink-faint); letter-spacing: .04em; }
+.coin-card.no-image { border-style: dashed; }
 
 /* ---------- detail view ---------- */
 .detail-back {
@@ -165,13 +276,13 @@ button { font-family: inherit; }
 }
 .detail-back:hover { color: var(--gold-text); }
 .detail-header { display: flex; gap: 22px; align-items: center; margin: 22px 0 6px; flex-wrap: wrap; }
-.detail-flag { width: 96px; height: 72px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--panel-border); flex: none; }
+.detail-flag { width: 96px; height: 72px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--panel-border); flex: none; display: block; }
 .detail-flag img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.detail-emblem {
-  width: 96px; height: 96px; border-radius: 50%; flex: none;
-  background: radial-gradient(circle at 32% 28%, var(--cabinet-1), var(--cabinet-2));
+.detail-badge, .detail-emblem {
+  width: 88px; height: 88px; border-radius: 50%; flex: none;
+  background: var(--badge-bg);
   border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif); font-weight: 700; color: var(--gold-bright); font-size: 1.9rem;
+  font-family: var(--serif); font-weight: 700; color: var(--badge-ink); font-size: 1.7rem; letter-spacing: .04em;
 }
 .detail-titles h1 { font-size: clamp(1.7rem, 3vw, 2.4rem); }
 .detail-titles .era { color: var(--ink-faint); font-size: .85rem; margin-top: 4px; }

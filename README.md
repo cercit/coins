@@ -8,31 +8,62 @@ write-up on what's distinctive about that country's coinage.
 Static site, no build step. `index.html` + `assets/app.js` render everything client-side
 from `data/coins.json`.
 
+## Hierarchy
+
+Coins are organised **Country → Issuer → Ruling authority**, because a country
+is often not the thing that actually struck the coin. India alone covers eight
+issuers — the Chola dynasty, British India, five princely states and the
+Republic. The United Kingdom and Gibraltar are separate issuers; Gibraltar is a
+British Overseas Territory with its own pound, not a Royal Mint issue.
+
+A country with more than one issuer shows its issuers rather than a flat pile of
+coins. A country with one issuer goes straight to the coins.
+
+Within a tray, coins default to **denomination order** — the way a collector
+lays a run out, smallest to largest — grouped by the ruler who issued them.
+Denominations are shown exactly as struck (¼ Anna, 1 Pice, 1 Rupee); the
+normalised value from the export is used only as a hidden sort key.
+
 ## Structure
 
 ```
 index.html            entry point
 assets/style.css       design system
-assets/app.js          routing + rendering (hash-based: #/ and #/e/{slug})
+assets/app.js          routing + rendering, guilloché generator
 assets/coins/          processed coin images (WebP, transparent background)
-data/coins.json        generated — one entry per country/historical issue
-data/speciality.json   hand-written per-entity write-ups, merged into coins.json at build time
-scripts/entities.js    country-name -> ISO2 flag code / historical-entity mapping
-scripts/build-data.js  reads the source spreadsheet, builds data/coins.json
+data/collection.json   generated — the full Country > Issuer > Authority tree
+data/speciality.json   hand-written per-country write-ups, merged in at build time
+scripts/registry.js    country/issuer -> ISO2 flag, badge, era and context
+scripts/build-data.js  reads the Numista CSV export, builds data/collection.json
 scripts/process-images.js  background removal + resize + WebP encoding
 ```
 
 ## Regenerating the data
 
-The source spreadsheet and raw photos live outside this repo (`../../Numesta/`).
-To rebuild from scratch:
+The Numista CSV export and raw photos live outside this repo. To rebuild:
 
 ```bash
 npm install
 npm run process-images   # trims, removes background, writes assets/coins/*.webp
-npm run build-data       # reads the spreadsheet, writes data/coins.json
+npm run build-data       # reads the CSV export, writes data/collection.json
 npm run serve            # http://localhost:4321
 ```
+
+`build-data` reads the CSV path from `$COINS_CSV`, defaulting to the export in
+`~/Downloads`. The export has duplicate column names (`Grade`, `Weight` and
+`Size` each appear twice — once for the coin, once for third-party slab
+grading), so it is parsed positionally rather than by header name.
+
+Coins whose photo hasn't been captured yet render a shape outline and "Photo to
+come" rather than being hidden, so the tray stays complete.
+
+## Design
+
+The hero carries a **guilloché rosette** — the engine-turned figure a rose lathe
+cuts into a coin die, the ornamental language of minting and security printing
+since the 18th century. It is drawn live from a hypotrochoid, the same curve the
+lathe traces mechanically. The header sits on a **reeded edge**, the fine
+milling cut into a coin's rim to make clipping detectable.
 
 ### How the background removal works
 
