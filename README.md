@@ -33,6 +33,7 @@ assets/app.js          routing + rendering, guilloché generator
 assets/coins/          processed coin images (WebP, transparent background)
 data/collection.json   generated — the full Country > Issuer > Authority tree
 data/speciality.json   hand-written per-country write-ups, merged in at build time
+data/annotations.json  specimen-level corrections keyed by N# (restrikes, replicas)
 scripts/registry.js    country/issuer -> ISO2 flag, badge, era and context
 scripts/build-data.js  reads the Numista CSV export, builds data/collection.json
 scripts/process-images.js  background removal + resize + WebP encoding
@@ -71,6 +72,20 @@ cross-checks it against the generated data and fails on:
 
 It knows that mints name their alloys, so explaining that Italy's *bronzital* is
 an aluminium bronze is not treated as a contradiction.
+
+## When the specimen isn't the type
+
+Numista describes a coin *type*. The piece actually in a collection is
+sometimes not that type — a restrike, a replica, a different alloy. Presenting
+the catalogue's figures for those would be a straightforward falsehood: the
+Prussia 5 Mark here is a restrike and is not the .900 silver the catalogue
+records.
+
+`data/annotations.json` records those differences, keyed by N#. A coin marked
+`restrike` or `replica` gets a visible mark on its card, and its remaining
+catalogue figures are labelled as describing the original type rather than the
+piece in hand. `compositionUnknown` suppresses the composition outright rather
+than asserting a figure that doesn't apply.
 
 ## Design
 

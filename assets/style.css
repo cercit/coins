@@ -263,6 +263,21 @@ button { font-family: inherit; }
 .coin-ref { font-size: .68rem; color: var(--ink-faint); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .coin-foot .coin-source { margin-top: 0; margin-left: auto; }
 
+/* ---------- restrike / replica ----------
+   A restrike is not the coin the catalogue describes. Mark it plainly and stop
+   the catalogue's figures from reading as measurements of this piece. */
+.coin-card.is-restrike { border-color: color-mix(in srgb, var(--gold) 45%, var(--panel-border)); }
+.specimen-flag { display: flex; flex-direction: column; gap: 5px; margin: 10px 0 0; }
+.specimen-mark {
+  align-self: flex-start; font-size: .62rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--on-amber, #171112); background: var(--gold);
+  border-radius: 3px; padding: 2px 7px;
+}
+:root[data-theme="light"] .specimen-mark { color: #fff; }
+.specimen-note { font-size: .76rem; line-height: 1.5; color: var(--ink-dim); }
+.coin-specs.is-catalogue dd { opacity: .72; border-style: dashed; }
+.specs-caveat { margin: 6px 0 0; font-size: .66rem; color: var(--ink-faint); font-style: italic; }
+
 /* ---------- awaiting photography ---------- */
 .coin-stage.is-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: default; }
 .coin-ghost { width: 42%; height: auto; fill: none; stroke: var(--gold); stroke-width: 2.5; opacity: .34; }

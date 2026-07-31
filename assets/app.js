@@ -331,12 +331,19 @@
         '<span class="coin-pending">Photo to come</span></div>';
 
     var sp = specs(c);
-    return '<article class="coin-card' + (c.hasImage ? '' : ' no-image') + '">' + stage +
+    var mark = c.restrike ? 'Restrike' : (c.replica ? 'Replica' : '');
+    var cls = 'coin-card' + (c.hasImage ? '' : ' no-image') + (mark ? ' is-restrike' : '');
+    return '<article class="' + cls + '">' + stage +
       '<div class="coin-info">' +
       '<div class="coin-head"><span class="coin-denom">' + esc(c.denomination) + '</span>' +
       '<span class="coin-year">' + esc(c.year) + '</span></div>' +
       (c.variant ? '<div class="coin-note">' + esc(c.variant) + '</div>' : '') +
-      (sp.length ? '<dl class="coin-specs">' + sp.map(function (s) { return '<dd>' + esc(s) + '</dd>'; }).join('') + '</dl>' : '') +
+      (mark ? '<p class="specimen-flag"><span class="specimen-mark">' + esc(mark) + '</span>' +
+        (c.specimenNote ? '<span class="specimen-note">' + esc(c.specimenNote) + '</span>' : '') + '</p>' : '') +
+      (sp.length ? '<dl class="coin-specs' + (c.catalogueOnlySpecs ? ' is-catalogue' : '') + '"' +
+        (c.catalogueOnlySpecs ? ' title="Catalogue figures for the original type, not measured from this specimen"' : '') + '>' +
+        sp.map(function (s) { return '<dd>' + esc(s) + '</dd>'; }).join('') + '</dl>' : '') +
+      (c.catalogueOnlySpecs && sp.length ? '<p class="specs-caveat">Catalogue figures for the original type</p>' : '') +
       '<div class="coin-foot">' +
       (c.grade ? '<span class="coin-grade" title="Condition">' + esc(c.grade) + '</span>' : '') +
       (c.reference ? '<span class="coin-ref">' + esc(c.reference) + '</span>' : '') +

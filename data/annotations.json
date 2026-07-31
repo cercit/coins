@@ -1,0 +1,27 @@
+{
+  "_README": [
+    "Specimen-level corrections, keyed by Numista N# number.",
+    "",
+    "Everything else on this site comes from the Numista catalogue, which describes",
+    "the coin TYPE. This file records where the specimen actually in the collection",
+    "differs from that type — a restrike, a replica, a different alloy, a known",
+    "counterfeit. Without it the site would present catalogue figures as though they",
+    "described the piece in hand, which for a restrike is simply wrong.",
+    "",
+    "Fields (all optional):",
+    "  restrike           true  -> card shows a RESTRIKE mark and stops presenting",
+    "                             catalogue specs as this specimen's own",
+    "  replica            true  -> same treatment, worded as a replica/copy",
+    "  note               string, shown on the card. Say what is known, not what is guessed.",
+    "  composition        string, overrides the catalogue composition when the real",
+    "                             alloy of this specimen is known",
+    "  compositionUnknown true  -> suppress the composition chip rather than assert",
+    "                             a figure that does not describe this piece"
+  ],
+
+  "26474": {
+    "restrike": true,
+    "compositionUnknown": true,
+    "note": "This piece is a restrike, not an original 1901 striking, and is not silver. The catalogue weight and diameter below describe the original type; the alloy of this specimen has not been recorded."
+  }
+}

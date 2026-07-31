@@ -15,6 +15,11 @@ const IMG_DIR = path.join(__dirname, '..', 'assets', 'coins');
 const SPECIALITY_PATH = path.join(__dirname, '..', 'data', 'speciality.json');
 const speciality = fs.existsSync(SPECIALITY_PATH) ? JSON.parse(fs.readFileSync(SPECIALITY_PATH, 'utf8')) : {};
 
+// Specimen-level corrections keyed by N# — see data/annotations.json.
+const ANNOTATIONS_PATH = path.join(__dirname, '..', 'data', 'annotations.json');
+const annotations = fs.existsSync(ANNOTATIONS_PATH) ? JSON.parse(fs.readFileSync(ANNOTATIONS_PATH, 'utf8')) : {};
+delete annotations._README;
+
 const rows = parse(fs.readFileSync(CSV_PATH, 'utf8'), { columns: false, skip_empty_lines: true, relax_column_count: true });
 const header = rows.shift();
 const C = {};
@@ -28,15 +33,27 @@ function slugify(s) {
     .replace(/^-+|-+$/g, '') || 'x';
 }
 
-// "5 Afghanis - Muhammed Zahir Shah" -> "5 Afghanis"
-// "1 Dollar (Flying Fish)"           -> "1 Dollar"
+// "5 Afghanis - Muhammed Zahir Shah" -> "5 Afghanis" + "Muhammed Zahir Shah"
+// "1 Dollar (Flying Fish)"           -> "1 Dollar"  + "Flying Fish"
 // Face value is shown exactly as struck (¼ Anna, 1 Pice), never normalised.
+//
+// Only unwrap the remainder when the whole of it is a single balanced
+// parenthetical. Stripping a trailing ")" unconditionally truncated titles
+// like "5 Mark - William II (Kingdom of Prussia)" into an unbalanced
+// "William II (Kingdom of Prussia".
 function splitTitle(title) {
   const t = String(title).trim();
-  const cut = Math.min(
-    ...[t.indexOf(' - '), t.indexOf(' (')].filter(i => i > 0).concat([t.length])
-  );
-  return { denomination: t.slice(0, cut).trim() || t, remainder: t.slice(cut).replace(/^\s*[-(]\s*/, '').replace(/\)$/, '').trim() };
+  const cuts = [t.indexOf(' - '), t.indexOf(' (')].filter(i => i > 0);
+  if (!cuts.length) return { denomination: t, remainder: '' };
+  const cut = Math.min(...cuts);
+  const denomination = t.slice(0, cut).trim() || t;
+  let remainder = t.slice(cut).trim();
+  if (remainder.startsWith('- ')) {
+    remainder = remainder.slice(2).trim();
+  } else if (remainder.startsWith('(') && remainder.endsWith(')') && !remainder.slice(1, -1).includes('(')) {
+    remainder = remainder.slice(1, -1).trim();
+  }
+  return { denomination, remainder };
 }
 
 function yearOf(r) {
@@ -86,6 +103,18 @@ for (const r of rows) {
     front: hasImage ? front : null,
     back: hasImage ? back : null,
   };
+
+  // A restrike or replica is not the coin the catalogue describes, so the
+  // catalogue's own figures must stop speaking for it.
+  const ann = annotations[nNum];
+  if (ann) {
+    if (ann.restrike) coin.restrike = true;
+    if (ann.replica) coin.replica = true;
+    if (ann.note) coin.specimenNote = ann.note;
+    if (ann.composition) coin.composition = ann.composition;
+    if (ann.compositionUnknown) { coin.composition = ''; coin.compositionUnknown = true; }
+    coin.catalogueOnlySpecs = Boolean(ann.restrike || ann.replica);
+  }
 
   const cNode = tree[country] ||= { issuers: {} };
   const iNode = cNode.issuers[issuer] ||= { authorities: {} };
