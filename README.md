@@ -1,4 +1,4 @@
-# World Coin Cabinet
+# World of Coins
 
 A personal numismatic collection — 743 coins from 94 countries and 8 historical/regional
 currency issues — browsable by flag. Pick a country, and the drawer opens: every coin
