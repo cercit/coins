@@ -6493,7 +6493,7 @@
       "multiIssuer": true,
       "issuerCount": 8,
       "speciality": [
-        "The largest holding in the cabinet, and the only one that needs eight separate drawers. It opens with a medieval Chola gold massa, then splits between the princely states — Hyderabad, Gwalior, Indore, Jaipur, Junagadh — that struck their own coinage right up to accession in 1948, and British India, whose rupee circulated alongside them.",
+        "The largest holding in the cabinet, and the only one that needs eight separate drawers. It opens with a copper massa struck under Rajaraja I of the Chola dynasty a thousand years ago, then splits between the princely states — Hyderabad, Gwalior, Indore, Jaipur, Junagadh — that struck their own coinage right up to accession in 1948, and British India, whose rupee circulated alongside them.",
         "After 1947 the anna-and-pice system gave way to decimal 'naye paise' in 1957. From the 1970s onward the Republic leaned heavily on FAO issues and on commemorative 2-, 5- and 10-rupee pieces marking everything from Independence anniversaries to national institutions — a habit that continues in the 75-years-of-Independence coins struck this decade."
       ],
       "issuers": [
@@ -9564,7 +9564,7 @@
       "multiIssuer": false,
       "issuerCount": 1,
       "speciality": [
-        "Italy's 500 lire and euro coins bookend the currency switch of 2002. The 1990 500 lire, minted in a distinctive bimetallic silver-and-bronze combination, was one of the more elaborate circulating coins Italy produced before the lira was retired after four decades."
+        "Italy's 500 lire and euro coins bookend the currency switch of 2002. The 500 lire pairs a bronzital centre — an aluminium-bronze alloy — inside a ring of acmonital, the stainless steel the Italian mint developed for coinage. Two-metal construction was still rare in circulating money when Italy adopted it, and the same centre-and-ring approach was later carried into the €1 and €2."
       ],
       "issuers": [
         {
@@ -19982,7 +19982,9 @@
       "yearMax": 2010,
       "multiIssuer": false,
       "issuerCount": 1,
-      "speciality": null,
+      "speciality": [
+        "This 2010 25 CFA francs, issued under the FAO coin program, represents the currency union's modern, ongoing form — the West African CFA franc still circulates today across eight countries and is pegged to the euro."
+      ],
       "issuers": [
         {
           "slug": "western-african-states",

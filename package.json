@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "A personal numismatic collection, browsable by flag.",
   "scripts": {
-    "build-data": "node scripts/build-data.js",
+    "build-data": "node scripts/build-data.js && node scripts/check-prose.js",
+    "check-prose": "node scripts/check-prose.js",
     "process-images": "node scripts/process-images.js",
     "serve": "npx serve . -l 4321"
   },

@@ -57,6 +57,21 @@ grading), so it is parsed positionally rather than by header name.
 Coins whose photo hasn't been captured yet render a shape outline and "Photo to
 come" rather than being hidden, so the tray stays complete.
 
+## Checking the prose
+
+Everything on the site is derived from the export except `data/speciality.json`,
+the hand-written country write-ups — which makes that file the one place a claim
+can be wrong on its own. `npm run check-prose` (also run by `build-data`)
+cross-checks it against the generated data and fails on:
+
+- a material named in prose that no coin in that country is recorded as
+  (this caught a write-up calling a copper Chola massa "gold")
+- a hardcoded coin count that no longer matches the collection
+- a write-up keyed to a country slug that doesn't exist
+
+It knows that mints name their alloys, so explaining that Italy's *bronzital* is
+an aluminium bronze is not treated as a contradiction.
+
 ## Design
 
 The hero carries a **guilloché rosette** — the engine-turned figure a rose lathe
