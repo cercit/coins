@@ -1,0 +1,18 @@
+{
+  "name": "world-coin-cabinet",
+  "version": "1.0.0",
+  "description": "A personal numismatic collection, browsable by flag.",
+  "scripts": {
+    "build-data": "node scripts/build-data.js",
+    "process-images": "node scripts/process-images.js",
+    "serve": "npx serve . -l 4321"
+  },
+  "keywords": ["numismatics", "coins", "collection"],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "sharp": "^0.35.3",
+    "xlsx": "^0.18.5"
+  }
+}

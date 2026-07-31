@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Coin Cabinet</title>
+<meta name="description" content="A personal numismatic collection — 743 coins from 102 countries and historical currency issues, browsable by flag.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2245%22 fill=%22%23161310%22 stroke=%22%23c9a15a%22 stroke-width=%226%22/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script>
+(function(){
+  try {
+    var t = localStorage.getItem('coins-theme');
+    if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="brand" href="#/">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" class="mark-ring"/><circle cx="20" cy="20" r="12" class="mark-face"/></svg>
+      </span>
+      <span class="brand-text">World Coin Cabinet</span>
+    </a>
+    <nav class="header-stats" id="header-stats" aria-label="Collection statistics"></nav>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light/dark theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.5A8.5 8.5 0 1 1 11.5 3a7 7 0 0 0 9.5 9.5Z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="app" class="wrap"></main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>A personal numismatic collection, catalogued with <a href="https://en.numista.com" target="_blank" rel="noopener">Numista</a>. Flags via <a href="https://flagcdn.com" target="_blank" rel="noopener">flagcdn</a>.</p>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
