@@ -38,6 +38,11 @@ Arunachal Pradesh). It pulls in no map SDK, API key or third-party runtime. If t
 ever regenerated, keep each country's `data-iso` (ISO 3166-1 alpha-2) attribute intact —
 the site keys the collection to the map by them.
 
+Because usable world maps with India's correct borders are hard to find, the map is also
+published as a **standalone, reusable resource** anyone can drop into their own project:
+[`world-map-svg-india-complete/`](world-map-svg-india-complete/) — the SVG, the generator, a
+demo page and a public-domain licence. Free for anyone facing the same wrong-borders problem.
+
 Within a tray, coins default to **denomination order** — the way a collector
 lays a run out, smallest to largest — grouped by the ruler who issued them.
 Denominations are shown exactly as struck (¼ Anna, 1 Pice, 1 Rupee); the

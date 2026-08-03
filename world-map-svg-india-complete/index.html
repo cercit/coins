@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>World Map SVG with India's Complete Borders</title>
+<meta name="description" content="Free world map SVG with India's full official borders (Aksai Chin, PoK, Arunachal Pradesh). No labels, ISO-coded paths, Robinson projection, public domain.">
+<style>
+  :root { --bg:#0d1611; --land:#2a2624; --border:#14100d; --hi:#efd07b; --accent:#c69a49; --ink:#ece6de; --dim:#9fb0a4; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); margin: 0 0 6px; }
+  p.lede { color: var(--dim); margin: 0 0 20px; max-width: 70ch; }
+  .controls { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  button { font: inherit; padding:6px 14px; border-radius:999px; border:1px solid #3a4a40; background:#16211b; color:var(--dim); cursor:pointer; }
+  button.active { background:var(--hi); border-color:var(--hi); color:#171112; font-weight:600; }
+  #map { border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--bg); }
+  #map svg { width:100%; height:auto; display:block; }
+  .map-countries path { fill:var(--land); stroke:var(--border); stroke-width:.5; transition: fill .15s; }
+  .map-countries path[data-iso="in"] { fill:var(--hi); }
+  .map-countries path:hover { fill:var(--accent); cursor:pointer; }
+  a { color: var(--hi); }
+  footer { margin-top:18px; color:var(--dim); font-size:.85rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>World Map SVG — India Complete</h1>
+  <p class="lede">A free, text-free world map where <strong>India is drawn with its full official borders</strong>
+    (Jammu&nbsp;&amp; Kashmir, Aksai Chin, PoK and Arunachal Pradesh). Every country is an ISO-coded
+    <code>&lt;path&gt;</code>. India is highlighted below; hover any country. See the
+    <a href="README.md">README</a> to use it in your own project.</p>
+
+  <div class="controls" id="views" role="group" aria-label="Zoom to a region"></div>
+  <div id="map" aria-busy="true">Loading map…</div>
+
+  <footer>
+    Geometry: <a href="https://www.naturalearthdata.com">Natural Earth</a> (public domain), India completed.
+    Maintained by <a href="https://github.com/cercit">Sameer Shreenivas Mittimani</a>. Public domain — free to use and share.
+  </footer>
+</div>
+
+<script>
+  var VIEWS = ['World', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+  fetch('world-map.svg').then(function (r) { return r.text(); }).then(function (txt) {
+    var box = document.getElementById('map');
+    box.innerHTML = txt; box.removeAttribute('aria-busy');
+    var svg = box.querySelector('svg');
+    var regions = {};
+    try { regions = JSON.parse(svg.getAttribute('data-regions') || '{}'); } catch (e) {}
+    var bar = document.getElementById('views');
+    VIEWS.forEach(function (v, i) {
+      var b = document.createElement('button');
+      b.textContent = v; if (i === 0) b.className = 'active';
+      b.onclick = function () {
+        [].forEach.call(bar.children, function (c) { c.className = c === b ? 'active' : ''; });
+        if (regions[v]) svg.setAttribute('viewBox', regions[v]);
+      };
+      bar.appendChild(b);
+    });
+    // clicking a country logs its ISO — replace with your own handler
+    [].forEach.call(svg.querySelectorAll('[data-iso]'), function (p) {
+      p.addEventListener('click', function () { console.log('clicked', p.getAttribute('data-iso'), p.getAttribute('data-name')); });
+    });
+  }).catch(function () { document.getElementById('map').textContent = 'Could not load world-map.svg'; });
+</script>
+</body>
+</html>
