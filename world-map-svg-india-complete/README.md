@@ -1,10 +1,10 @@
 # World Map SVG with India's Complete Borders
 
 A free, lightweight **world map SVG** in which **India is drawn with its full official
-borders** — including **Jammu & Kashmir, Aksai Chin, Pakistan-occupied Kashmir (PoK) and
-Arunachal Pradesh**. No labels, no text, no dependencies. Every country is a single `<path>`
-tagged with its ISO code, so it drops straight into a web page and each country is
-individually styleable and clickable.
+borders** — including **Jammu & Kashmir, Aksai Chin, Pakistan-occupied Kashmir (PoK),
+Arunachal Pradesh, and the Andaman & Nicobar Islands and Lakshadweep**. No labels, no text,
+no dependencies. Every country is a single `<path>` tagged with its ISO code, so it drops
+straight into a web page and each country is individually styleable and clickable.
 
 If you have ever pulled a world map off the shelf and found **India shown on the UN / "de
 facto" line** — with the north of Kashmir and Arunachal Pradesh cut away — this is the fix.
