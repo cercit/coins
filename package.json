@@ -6,7 +6,9 @@
     "build-data": "node scripts/build-data.js && node scripts/check-prose.js",
     "check-prose": "node scripts/check-prose.js",
     "process-images": "node scripts/process-images.js",
-    "serve": "npx serve . -l 4321"
+    "build-world-map": "node scripts/build-world-map.js",
+    "serve": "npx serve . -l 4321",
+    "test": "node --test assets/map-utils.test.js"
   },
   "keywords": [
     "numismatics",

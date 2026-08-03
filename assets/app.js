@@ -98,7 +98,39 @@
 
   /* ---------------- home ---------------- */
 
+  // World first, then the site's five geographic regions (matching the map's
+  // baked-in continent viewBoxes). "Historical & Regional" has no place on a
+  // geographic map, so it stays a filter chip only, not a map view.
+  var MAP_VIEWS = ['World', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+
   function renderHome() {
+    app.innerHTML =
+      '<section class="hero">' + guilloche() +
+        '<h1>A cabinet of <em>' + DATA.totalCoins + '</em> coins</h1>' +
+        '<p>Collected by hand and catalogued one at a time, from ' + DATA.countryCount +
+        ' countries and ' + DATA.issuerCount + ' separate issuing authorities. Open a drawer to begin.</p>' +
+      '</section>' +
+      mapSectionMarkup() +
+      '<div class="controls">' +
+        '<div class="search-box">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>' +
+        '<input type="text" id="search-input" placeholder="Search countries or issuers…" value="' + esc(state.query) + '" autocomplete="off">' +
+        '</div>' +
+        '<div class="chips">' + REGION_ORDER.map(function (reg) {
+          return '<button class="chip' + (state.region === reg ? ' active' : '') + '" data-region="' + esc(reg) + '">' + esc(reg) + '</button>';
+        }).join('') + '</div>' +
+      '</div>' +
+      '<div class="section-title"><h2>Countries</h2><span class="count" id="grid-count"></span></div>' +
+      '<div class="flag-grid" id="flag-grid"></div>';
+
+    // The map is always built from the whole collection, never the filtered
+    // list — search and region chips affect only the flag grid below it.
+    renderCollectionMap(DATA.countries);
+    wireHomeControls();
+    updateGrid();
+  }
+
+  function updateGrid() {
     var q = state.query.trim().toLowerCase();
     var list = DATA.countries.filter(function (c) {
       if (state.region !== 'All' && c.region !== state.region) return false;
@@ -106,42 +138,195 @@
       if (c.label.toLowerCase().indexOf(q) !== -1) return true;
       return c.issuers.some(function (i) { return i.label.toLowerCase().indexOf(q) !== -1; });
     });
+    var count = document.getElementById('grid-count');
+    var grid = document.getElementById('flag-grid');
+    if (count) count.textContent = list.length + ' shown';
+    if (!grid) return;
+    if (list.length) {
+      grid.className = 'flag-grid';
+      grid.innerHTML = list.map(countryTile).join('');
+    } else {
+      grid.className = '';
+      grid.innerHTML = '<div class="empty">Nothing matches “' + esc(state.query) + '”.</div>';
+    }
+  }
 
-    var html = '<section class="hero">' + guilloche() +
-      '<h1>A cabinet of <em>' + DATA.totalCoins + '</em> coins</h1>' +
-      '<p>Collected by hand and catalogued one at a time, from ' + DATA.countryCount +
-      ' countries and ' + DATA.issuerCount + ' separate issuing authorities. Open a drawer to begin.</p>' +
-      '</section>';
-
-    html += '<div class="controls">' +
-      '<div class="search-box">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>' +
-      '<input type="text" id="search-input" placeholder="Search countries or issuers…" value="' + esc(state.query) + '" autocomplete="off">' +
-      '</div>' +
-      '<div class="chips">' + REGION_ORDER.map(function (reg) {
-        return '<button class="chip' + (state.region === reg ? ' active' : '') + '" data-region="' + esc(reg) + '">' + esc(reg) + '</button>';
-      }).join('') + '</div>' +
-      '</div>';
-
-    html += '<div class="section-title"><h2>Countries</h2><span class="count">' + list.length + ' shown</span></div>';
-    html += list.length
-      ? '<div class="flag-grid">' + list.map(countryTile).join('') + '</div>'
-      : '<div class="empty">Nothing matches “' + esc(state.query) + '”.</div>';
-
-    app.innerHTML = html;
-
+  function wireHomeControls() {
     var input = document.getElementById('search-input');
-    input.addEventListener('input', function (e) {
-      state.query = e.target.value;
-      renderHome();
-      var el = document.getElementById('search-input');
-      el.focus();
-      el.selectionStart = el.selectionEnd = el.value.length;
-    });
+    // The input is no longer rebuilt on each keystroke, so focus/caret survive
+    // naturally — updateGrid only rewrites the grid.
+    if (input) input.addEventListener('input', function (e) { state.query = e.target.value; updateGrid(); });
     each('.chip', function (btn) {
-      btn.addEventListener('click', function () { state.region = btn.getAttribute('data-region'); renderHome(); });
+      btn.addEventListener('click', function () {
+        state.region = btn.getAttribute('data-region');
+        each('.chip', function (b) { b.classList.toggle('active', b === btn); });
+        updateGrid();
+      });
     });
   }
+
+  /* ---------------- collection world map ---------------- */
+
+  var mapSvgCache = null;
+  var prefersReduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  function mapSectionMarkup() {
+    var views = MAP_VIEWS.map(function (v, i) {
+      return '<button type="button" class="map-view' + (i === 0 ? ' active' : '') +
+        '" data-view="' + v + '" aria-pressed="' + (i === 0 ? 'true' : 'false') + '">' + v + '</button>';
+    }).join('');
+    var legend = '<div class="map-legend" aria-hidden="true">' +
+      '<span class="map-legend-label">Fewer</span>' +
+      '<span class="map-swatch" data-map-bucket="1"></span>' +
+      '<span class="map-swatch" data-map-bucket="2"></span>' +
+      '<span class="map-swatch" data-map-bucket="3"></span>' +
+      '<span class="map-swatch" data-map-bucket="4"></span>' +
+      '<span class="map-legend-label">More coins</span></div>';
+    return '<section class="collection-map-section" aria-labelledby="map-title">' +
+      '<div class="map-heading">' +
+        '<div><p class="eyebrow">Geographic cabinet</p><h2 id="map-title">Explore the collection by map</h2></div>' +
+        '<p>Brighter countries hold more coins. Select a country to open its issuing authorities.</p>' +
+      '</div>' +
+      '<div class="map-views" role="group" aria-label="Zoom the map to a region">' + views + '</div>' +
+      '<div class="map-frame" id="collection-map" aria-busy="true"><p class="map-loading">Loading collection map…</p></div>' +
+      legend +
+      '<div class="map-region-list" id="map-region-list" hidden>' +
+        '<p class="map-region-list-title" id="map-region-list-title"></p>' +
+        '<div class="map-region-list-items" id="map-region-list-items"></div>' +
+      '</div>' +
+      '<p class="map-note">Historical issues — British India, the princely states — appear once you open their modern country. India is shown with its official borders. Pick a region to list its countries — handy for small islands that are hard to click.</p>' +
+      '<div class="map-tip" id="map-tip" aria-hidden="true"></div>' +
+    '</section>';
+  }
+
+  function renderCollectionMap(countries) {
+    var frame = document.getElementById('collection-map');
+    if (!frame) return;
+    var apply = function (svgText) {
+      frame.innerHTML = svgText;
+      frame.removeAttribute('aria-busy');
+      var svg = frame.querySelector('svg');
+      if (!svg) return mapUnavailable(frame);
+      decorateCollectionMap(frame, svg, countries);
+      wireMapViews(frame, svg);
+    };
+    if (mapSvgCache) return apply(mapSvgCache);
+    fetch('assets/world-map.svg').then(function (r) {
+      if (!r.ok) throw new Error('map ' + r.status);
+      return r.text();
+    }).then(function (t) { mapSvgCache = t; apply(t); }).catch(function () { mapUnavailable(frame); });
+  }
+
+  function mapUnavailable(frame) {
+    frame.removeAttribute('aria-busy');
+    frame.innerHTML = '<p class="map-loading">Map unavailable right now — browse by search or the flags below.</p>';
+  }
+
+  function decorateCollectionMap(frame, svg, countries) {
+    var index = CoinMapUtils.buildCountryIndex(countries);
+    var maxCount = 0;
+    Object.keys(index).forEach(function (k) { if (index[k].count > maxCount) maxCount = index[k].count; });
+    var tip = document.getElementById('map-tip');
+
+    eachNode(svg.querySelectorAll('[data-iso]'), function (path) {
+      var c = index[path.getAttribute('data-iso')];
+      if (!c) return; // uncollected country: decorative geometry, not interactive
+      path.setAttribute('data-map-state', 'collected');
+      path.setAttribute('data-map-bucket', String(CoinMapUtils.colourBucket(c.count, maxCount)));
+      path.setAttribute('role', 'link');
+      path.setAttribute('tabindex', '0');
+      path.setAttribute('aria-label', CoinMapUtils.countryAriaLabel(c));
+
+      var go = function () { location.hash = '#/c/' + c.slug; };
+      path.addEventListener('click', go);
+      path.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); go(); }
+      });
+      path.addEventListener('pointerenter', function (e) { showTip(frame, tip, c, e); });
+      path.addEventListener('pointermove', function (e) { showTip(frame, tip, c, e); });
+      path.addEventListener('pointerleave', function () { hideTip(tip); });
+      path.addEventListener('focus', function () { focusTip(frame, tip, c, path); });
+      path.addEventListener('blur', function () { hideTip(tip); });
+    });
+  }
+
+  // On keyboard focus there's no cursor to anchor the tooltip, so centre it on
+  // the focused country's shape instead.
+  function focusTip(frame, tip, c, path) {
+    if (!tip) return;
+    var pr = path.getBoundingClientRect();
+    var fr = frame.getBoundingClientRect();
+    tip.textContent = c.label + ' · ' + c.count + ' coin' + (c.count === 1 ? '' : 's');
+    tip.style.left = (pr.left + pr.width / 2 - fr.left) + 'px';
+    tip.style.top = (pr.top + pr.height / 2 - fr.top) + 'px';
+    tip.setAttribute('data-show', '1');
+  }
+
+  function showTip(frame, tip, c, e) {
+    if (!tip) return;
+    tip.textContent = c.label + ' · ' + c.count + ' coin' + (c.count === 1 ? '' : 's');
+    var r = frame.getBoundingClientRect();
+    tip.style.left = (e.clientX - r.left) + 'px';
+    tip.style.top = (e.clientY - r.top) + 'px';
+    tip.setAttribute('data-show', '1');
+  }
+  function hideTip(tip) { if (tip) tip.removeAttribute('data-show'); }
+
+  function wireMapViews(frame, svg) {
+    var regions;
+    try { regions = JSON.parse(svg.getAttribute('data-regions') || '{}'); } catch (e) { regions = {}; }
+    var section = frame.closest('.collection-map-section');
+    eachNode(section.querySelectorAll('.map-view'), function (btn) {
+      btn.addEventListener('click', function () {
+        var vb = regions[btn.getAttribute('data-view')];
+        if (!vb) return;
+        eachNode(section.querySelectorAll('.map-view'), function (b) {
+          var on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        tweenViewBox(svg, vb);
+        renderRegionList(btn.getAttribute('data-view'));
+      });
+    });
+    renderRegionList('World'); // start collapsed
+  }
+
+  // A clickable list of the collected countries in the chosen region. It works
+  // straight from the collection data, so it reaches every country in a region —
+  // including small islands and microstates too tiny to click on the map itself.
+  function renderRegionList(view) {
+    var box = document.getElementById('map-region-list');
+    if (!box) return;
+    if (view === 'World') { box.hidden = true; return; }
+    var list = DATA.countries
+      .filter(function (c) { return c.region === view && c.count > 0; })
+      .sort(function (a, b) { return a.label.localeCompare(b.label); });
+    if (!list.length) { box.hidden = true; return; }
+    document.getElementById('map-region-list-title').textContent = list.length + ' collected in ' + view;
+    document.getElementById('map-region-list-items').innerHTML = list.map(function (c) {
+      return '<a class="map-region-chip" href="#/c/' + c.slug + '">' + esc(c.label) +
+        ' <span>' + c.count + '</span></a>';
+    }).join('');
+    box.hidden = false;
+  }
+
+  function tweenViewBox(svg, targetStr) {
+    var to = targetStr.split(/[\s,]+/).map(Number);
+    var token = (svg.__vb = (svg.__vb || 0) + 1);
+    if (prefersReduce.matches) return void svg.setAttribute('viewBox', to.join(' '));
+    var from = (svg.getAttribute('viewBox') || '0 0 2000 856').split(/[\s,]+/).map(Number);
+    var start = performance.now(), dur = 480;
+    (function step(now) {
+      if (svg.__vb !== token) return; // a newer view took over
+      var t = Math.min(1, (now - start) / dur);
+      var e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      svg.setAttribute('viewBox', from.map(function (f, i) { return +(f + (to[i] - f) * e).toFixed(1); }).join(' '));
+      if (t < 1) requestAnimationFrame(step);
+    })(start);
+  }
+
+  function eachNode(nodeList, fn) { Array.prototype.forEach.call(nodeList, fn); }
 
   function flagMark(iso2, badge, alt, cls) {
     return iso2
@@ -202,6 +387,17 @@
     ]);
 
     if (c.speciality) html += '<div class="speciality">' + c.speciality.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>';
+
+    // India is the collection's deepest country-to-issuer bridge: the map opens
+    // modern India, and from here a visitor picks the authority that struck the
+    // coin. Spell that out so princely states never read as separate countries.
+    if (c.slug === 'in') {
+      html += '<aside class="historical-callout" aria-labelledby="india-history-title">' +
+        '<p class="eyebrow">From map to mint</p>' +
+        '<h2 id="india-history-title">India’s many issuers</h2>' +
+        '<p>You entered modern India from the map. Now choose the authority that actually struck the coin — the Chola dynasty, British India, a princely state, or the Republic. These are historical issuers within India, not separate countries on the map.</p>' +
+        '</aside>';
+    }
 
     html += '<div class="section-title"><h2>Issuers</h2><span class="count">' + c.issuerCount + '</span></div>' +
       '<p class="section-lede">' + esc(c.label) + ' has struck coinage under more than one authority. Each issued its own currency — pick one to open its tray.</p>';
