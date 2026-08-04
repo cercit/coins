@@ -1,0 +1,10 @@
+# World of Coins
+
+> A personal numismatic collection browsable on an interactive world map and by country, issuer and coin. The site also publishes a reusable, public-domain world map SVG with India's official/complete borders.
+
+## Pages
+- [Collection home](https://cercit.github.io/coins/): interactive world map of the collection, plus a country → issuer → coin browser.
+- [World Map SVG with India's complete borders](https://cercit.github.io/coins/world-map-svg-india-complete/): free, public-domain, text-free world map (by Sameer Shreenivas Mittimani) where India includes Aksai Chin, Pakistan-occupied Kashmir, Arunachal Pradesh, the Andaman & Nicobar Islands and Lakshadweep. Countries carry ISO 3166-1 alpha-2 codes; Robinson projection.
+
+## Reuse
+The world map SVG and its GeoJSON source are public domain (base geometry: Natural Earth). Free to copy and adapt; a link back is appreciated.
