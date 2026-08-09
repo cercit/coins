@@ -118,11 +118,10 @@
       '</section>' +
       mapSectionMarkup() +
       '<div class="section-title"><h2>Exhibition</h2><span class="count">now on show</span></div>' +
-      '<div class="gallery-cards" id="home-exhibits"><div class="empty">Loading the gallery…</div></div>';
+      '<div class="gallery-cards" id="home-exhibits"><div class="empty">Loading the gallery…</div></div>' +
+      countriesSectionMarkup();
 
     renderCollectionMap(DATA.countries);
-    // The full country catalogue now lives on the Exhibition page; the home
-    // leads with the featured exhibitions instead.
     loadExhibition(function (ex) {
       var box = document.getElementById('home-exhibits');
       if (!box) return;
@@ -130,6 +129,8 @@
         ? ex.series.map(function (s) { return exhibitCard(ex, s); }).join('')
         : '<div class="empty">No exhibitions yet.</div>';
     });
+    wireHomeControls();
+    updateGrid();
   }
 
   function updateGrid() {
