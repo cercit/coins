@@ -492,5 +492,494 @@ button { font-family: inherit; }
   .map-tip { transition: none; }
 }
 
+/* ---------- exhibition ----------
+   A display case rather than a grid: one series at a time, in plates. Each
+   plate holds two coins; each coin sets its obverse/reverse against a
+   two-column information panel, so a plate reads as a 2x2 block. */
+.header-link {
+  font-size: .82rem; color: var(--ink-dim); text-decoration: none; white-space: nowrap;
+  padding: 6px 13px; border: 1px solid var(--panel-border); border-radius: 999px; transition: border-color .15s, color .15s;
+}
+.header-link:hover { border-color: var(--gold); color: var(--gold-text); }
+
+.exhibit-head { display: flex; gap: 22px; align-items: center; margin: 22px 0 6px; flex-wrap: wrap; }
+
+.exhibit-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  margin: 26px 0 18px; padding: 10px 14px; background: var(--panel);
+  border: 1px solid var(--panel-border); border-radius: 999px;
+}
+.exhibit-pageinfo { font-size: .82rem; color: var(--ink-dim); letter-spacing: .04em; }
+.exhibit-pageinfo b { color: var(--gold-text); font-family: var(--serif); font-size: 1.05rem; }
+.exhibit-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.exhibit-btn {
+  font: inherit; font-size: .8rem; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--panel-border); background: var(--bg-elevated); color: var(--ink-dim);
+  text-decoration: none; transition: border-color .15s, color .15s;
+}
+.exhibit-btn:hover { border-color: var(--gold); color: var(--gold-text); }
+.exhibit-btn.is-off { opacity: .38; pointer-events: none; }
+
+/* Each series can set its own case colours. The default is the cabinet's wood
+   and brass; a series carrying data-series-theme overrides these tokens. */
+.exhibit, .gallery-card {
+  --ex-plate: linear-gradient(160deg, var(--cabinet-1), var(--cabinet-2));
+  --ex-vitrine: rgba(0,0,0,.22);
+  --ex-sheen: rgba(255,255,255,.05);
+  --ex-border: var(--panel-border);
+  --ex-dim: var(--ink-faint);
+  --ex-ink: var(--ink);
+  --ex-soft: var(--ink-dim);
+  --ex-glow: rgba(255,240,210,.12);
+  --ex-rule: var(--gold);
+  --ex-ribbon: none;
+  --ex-label: #f5f1e6;
+  --ex-label-edge: #ddd4c1;
+  --ex-label-accent: #7a5322;
+}
+
+/* United Kingdom — the Crown Jewels room: a near-black gallery, each coin
+   spotlit behind glass, Union blue and crimson, and a printed cream label. */
+[data-series-theme="uk"] {
+  --ex-plate:
+    radial-gradient(1100px 380px at 50% -12%, rgba(150,180,240,.13), transparent 72%),
+    linear-gradient(168deg, #0d1430 0%, #080c1c 58%, #05070f 100%);
+  --ex-vitrine:
+    radial-gradient(ellipse 70% 60% at 50% 22%, rgba(120,155,225,.16), transparent 72%),
+    linear-gradient(180deg, #0a1029 0%, #060915 100%);
+  --ex-sheen: rgba(170,200,255,.10);
+  --ex-border: #26325a;
+  --ex-dim: #93a6cd;
+  --ex-ink: #eef2fa;
+  --ex-soft: #c3d0e8;
+  --ex-glow: rgba(190,215,255,.20);
+  --ex-rule: #c9a15a;
+  --ex-ribbon: linear-gradient(90deg, #012169 0 34%, #f4f6fa 34% 66%, #c8102e 66% 100%);
+  --ex-label-accent: #8c1c2b;
+}
+:root[data-theme="light"] [data-series-theme="uk"] {
+  --ex-plate:
+    radial-gradient(1100px 380px at 50% -12%, rgba(1,33,105,.09), transparent 72%),
+    linear-gradient(168deg, #e9edf7, #d7deee);
+  --ex-vitrine:
+    radial-gradient(ellipse 70% 60% at 50% 22%, rgba(255,255,255,.85), transparent 72%),
+    linear-gradient(180deg, #dfe5f2, #cfd8ea);
+  --ex-sheen: rgba(255,255,255,.7);
+  --ex-border: #bcc7e0;
+  --ex-dim: #5c6c90;
+  --ex-ink: #131a2c;
+  --ex-soft: #3c4864;
+  --ex-glow: rgba(255,255,255,.9);
+  --ex-rule: #8a6a2f;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) [data-series-theme="uk"] {
+    --ex-plate:
+      radial-gradient(1100px 380px at 50% -12%, rgba(1,33,105,.09), transparent 72%),
+      linear-gradient(168deg, #e9edf7, #d7deee);
+    --ex-vitrine:
+      radial-gradient(ellipse 70% 60% at 50% 22%, rgba(255,255,255,.85), transparent 72%),
+      linear-gradient(180deg, #dfe5f2, #cfd8ea);
+    --ex-sheen: rgba(255,255,255,.7);
+    --ex-border: #bcc7e0;
+    --ex-dim: #5c6c90;
+    --ex-ink: #131a2c;
+    --ex-soft: #3c4864;
+    --ex-glow: rgba(255,255,255,.9);
+    --ex-rule: #8a6a2f;
+  }
+}
+
+/* --- the gallery entrance --- */
+.gallery-head { text-align: center; padding: 46px 0 34px; }
+.gallery-eyebrow {
+  margin: 0; font-size: .64rem; letter-spacing: .34em; text-transform: uppercase;
+  color: var(--ex-rule);
+}
+.gallery-eyebrow::after {
+  content: ""; display: block; width: 34px; height: 1px; margin: 12px auto 0; background: var(--ex-rule); opacity: .5;
+}
+.gallery-country {
+  display: inline-flex; align-items: center; gap: 10px; margin: 22px 0 0;
+  font-size: .82rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-dim);
+}
+.gallery-country img {
+  width: 26px; height: 18px; object-fit: cover; border-radius: 2px; border: 1px solid var(--panel-border);
+}
+.gallery-title {
+  font-family: var(--serif); font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 600;
+  line-height: 1.05; margin: 10px 0 0; color: var(--ink);
+}
+.gallery-dates {
+  margin: 10px 0 0; font-family: var(--serif); font-style: italic; font-size: 1.1rem; color: var(--gold-text);
+}
+.gallery-intro { max-width: 60ch; margin: 26px auto 0; text-align: left; }
+.gallery-intro p { margin: 0; color: var(--ink-dim); font-size: .96rem; line-height: 1.75; }
+.gallery-intro p + p { margin-top: 12px; }
+.gallery-facts {
+  display: flex; justify-content: center; gap: 0; list-style: none; margin: 30px 0 0; padding: 0;
+}
+.gallery-facts li { padding: 0 26px; }
+.gallery-facts li + li { border-left: 1px solid var(--panel-border); }
+.gallery-facts b {
+  display: block; font-family: var(--serif); font-size: 1.7rem; font-weight: 600; color: var(--gold-text); line-height: 1;
+}
+.gallery-facts span {
+  display: block; margin-top: 5px; font-size: .62rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+
+/* --- the foyer: a series announced by one of its own coins --- */
+.gallery-cards { display: grid; gap: 22px; margin-bottom: 60px; }
+.gallery-card {
+  display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 30px; align-items: center;
+  padding: 30px; text-decoration: none; color: inherit; position: relative; overflow: hidden;
+  border: 1px solid var(--ex-border); border-radius: var(--radius-lg);
+  background: var(--ex-plate); box-shadow: var(--shadow-1);
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.gallery-card::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+  background: var(--ex-ribbon); opacity: .9;
+}
+.gallery-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: var(--ex-rule); }
+.gallery-card-coin {
+  position: relative; aspect-ratio: 1 / 1; border-radius: 50%;
+  background: radial-gradient(ellipse 66% 56% at 50% 34%, var(--ex-glow), transparent 72%);
+  display: flex; align-items: center; justify-content: center;
+}
+.gallery-card-coin::after {
+  content: ""; position: absolute; left: 22%; right: 22%; bottom: 6%; height: 12px;
+  border-radius: 50%; background: radial-gradient(ellipse at center, rgba(0,0,0,.5), transparent 72%);
+}
+.gallery-card-coin img {
+  position: relative; z-index: 1; width: 86%; height: 86%; object-fit: contain;
+  filter: drop-shadow(0 16px 26px rgba(0,0,0,.6));
+}
+.gallery-card-country {
+  margin: 0; font-size: .68rem; letter-spacing: .26em; text-transform: uppercase; color: var(--ex-dim);
+}
+.gallery-card-title {
+  font-family: var(--serif); font-size: clamp(1.9rem, 3.4vw, 2.7rem); font-weight: 600;
+  line-height: 1.1; margin: 8px 0 0; color: var(--ex-ink);
+}
+.gallery-card-dates {
+  margin: 6px 0 0; font-family: var(--serif); font-style: italic; font-size: 1.02rem; color: var(--ex-rule);
+}
+.gallery-card-lede {
+  margin: 14px 0 0; max-width: 52ch; font-size: .9rem; line-height: 1.65; color: var(--ex-soft);
+}
+.gallery-card-meta { margin: 14px 0 0; font-size: .76rem; letter-spacing: .05em; color: var(--ex-dim); }
+.gallery-card-meta b { font-family: var(--serif); font-size: 1.05rem; color: var(--ex-ink); font-weight: 600; }
+.gallery-card-cta {
+  display: inline-block; margin-top: 18px; font-size: .72rem; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ex-rule);
+}
+@media (max-width: 700px) {
+  .gallery-card { grid-template-columns: 1fr; gap: 18px; padding: 22px; text-align: center; }
+  .gallery-card-coin { max-width: 210px; margin: 0 auto; }
+  .gallery-card-lede { margin-left: auto; margin-right: auto; }
+}
+
+/* --- the case --- */
+.exhibit-page {
+  position: relative; overflow: hidden;
+  display: grid; gap: 20px; margin-bottom: 30px; padding: 26px 24px 24px;
+  border: 1px solid var(--ex-border); border-radius: var(--radius-lg);
+  background: var(--ex-plate);
+  box-shadow: var(--shadow-2);
+}
+.exhibit-page::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+  background: var(--ex-ribbon); opacity: .9; pointer-events: none;
+}
+.exhibit-plate-no {
+  margin: 0; font-size: .62rem; letter-spacing: .26em; text-transform: uppercase;
+  color: var(--ex-dim); text-align: center;
+}
+
+/* One object on show: the lit case, then the wall label mounted beside it.
+   The label is deliberately smaller than the case — as a printed label is
+   beside a real vitrine — so it is centred rather than stretched to match. */
+/* Case and label are one pair: both stretch to the same height, the coins
+   centred in their glass and the label's footer resting on the bottom edge. */
+.object { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 6fr); gap: 26px; align-items: stretch; }
+.object + .object { margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--ex-border); }
+
+/* The vitrine is the case interior, not a second box inside the case: the two
+   coins sit straight on the case floor, each in its own pool of light, with no
+   border or panel of their own. */
+.object-case {
+  position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+  align-content: center; padding: 6px 6px 2px;
+}
+.object-no {
+  position: absolute; top: 9px; right: 13px; font-family: var(--serif);
+  font-size: .9rem; color: var(--ex-rule); opacity: .85; letter-spacing: .04em;
+}
+.object-face { margin: 0; }
+.object-face figcaption {
+  margin-top: 7px; text-align: center; font-size: .6rem; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ex-dim);
+}
+/* The coin is not in a box of its own — it sits in a pool of gallery light
+   cast on the case floor, with its own shadow beneath it. */
+.object-lit {
+  position: relative; aspect-ratio: 1 / 1; border-radius: 10px; overflow: hidden;
+  background: radial-gradient(ellipse 62% 48% at 50% 36%, var(--ex-glow), transparent 72%);
+}
+.object-lit::after {
+  content: ""; position: absolute; left: 24%; right: 24%; bottom: 10%; height: 9px;
+  border-radius: 50%; background: radial-gradient(ellipse at center, rgba(0,0,0,.45), transparent 72%);
+}
+.object-lit img {
+  position: absolute; inset: 8%; width: 84%; height: 84%; object-fit: contain; z-index: 1;
+  filter: drop-shadow(0 12px 20px rgba(0,0,0,.55));
+}
+.object-empty {
+  grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; min-height: 170px; border: 1px dashed var(--ex-border); border-radius: 10px;
+}
+
+/* The wall label is printed card stock, so it carries its own dark ink
+   regardless of how dark the gallery around it is. Re-pointing the tokens here
+   keeps every line inside the label legible on the cream. */
+.object-label {
+  --ex-ink: #23201b;
+  --ex-soft: #4c4538;
+  --ex-dim: #736853;
+  --ex-rule: var(--ex-label-accent);
+  min-width: 0; padding: 16px 18px; border-radius: var(--radius-sm);
+  background: var(--ex-label); border: 1px solid var(--ex-label-edge);
+  box-shadow: var(--shadow-1);
+  display: flex; flex-direction: column;
+}
+.label-link { margin-top: auto; }
+.label-title {
+  font-family: var(--serif); font-size: 1.3rem; font-weight: 600; line-height: 1.15;
+  color: var(--ex-ink); margin: 0;
+}
+.label-date {
+  margin: 2px 0 0; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ex-rule);
+}
+.label-maker { margin: 6px 0 0; font-size: .8rem; font-style: italic; color: var(--ex-soft); }
+.label-text {
+  margin: 9px 0 0; padding-top: 9px; border-top: 1px solid var(--ex-label-edge);
+  font-size: .78rem; line-height: 1.5; color: var(--ex-soft);
+}
+.label-tomb { margin: 10px 0 0; display: grid; gap: 4px; }
+.label-tomb > div { display: grid; grid-template-columns: 6.4em 1fr; gap: 9px; align-items: baseline; }
+.label-tomb dt {
+  font-size: .55rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ex-dim); line-height: 1.5;
+}
+.label-tomb dd { margin: 0; font-size: .76rem; line-height: 1.4; color: var(--ex-ink); overflow-wrap: anywhere; }
+.label-foot {
+  margin: 9px 0 0; padding-left: 9px; border-left: 2px solid var(--ex-rule);
+  font-size: .69rem; font-style: italic; line-height: 1.45; color: var(--ex-soft);
+}
+.label-link {
+  display: inline-block; margin-top: 9px; font-size: .66rem; letter-spacing: .06em;
+  color: var(--ex-dim); text-decoration: none;
+}
+.label-link:hover { color: var(--ex-rule); }
+
+.exhibit-closing {
+  margin: 8px 0 60px; padding: 16px 20px; background: var(--panel); border: 1px solid var(--panel-border);
+  border-left: 3px solid var(--gold); border-radius: var(--radius-sm);
+  font-size: .85rem; color: var(--ink-dim); line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .object { grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 640px) {
+  .header-link { display: none; }
+  .exhibit-page { padding: 14px; }
+  .object-label { padding: 16px; }
+  .label-tomb > div { grid-template-columns: 1fr; gap: 0; }
+  .exhibit-bar { border-radius: var(--radius-md); }
+  .gallery-title { font-size: 2.1rem; }
+}
+
+@media print {
+  .site-header, .site-footer, .exhibit-bar, .crumbs, .exhibit-closing, .label-link { display: none !important; }
+  body { background: #fff; }
+  .gallery-title, .label-title, .label-tomb dd, .label-text { color: #000 !important; }
+  .exhibit-page {
+    background: #fff !important; border: 1px solid #bbb; box-shadow: none;
+    break-after: page; page-break-after: always;
+  }
+  .exhibit-page:last-child { break-after: auto; page-break-after: auto; }
+  .object { break-inside: avoid; page-break-inside: avoid; }
+  .object-case, .object-label { background: #fff !important; box-shadow: none; }
+}
+
+/* ---------- exhibition gallery (immersive walk-through) ----------
+   Scrolling pans the hall horizontally: a foyer, room title-cards, and walls of
+   framed coins. On narrow screens or with reduced motion the JS adds .is-vertical
+   (and if JS never runs, the :not(.is-immersive) rule does the same), so the
+   panels simply stack and scroll — the walk is an enhancement, never a gate. */
+.gallery-scroll { position: relative; width: 100vw; margin-left: calc(50% - 50vw); }
+.gallery-pin { position: relative; overflow: hidden; background: var(--ex-plate); }
+.gallery-scroll.is-immersive .gallery-pin { position: sticky; top: 0; height: 100vh; }
+.gallery-pin::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(140% 90% at 50% -14%, rgba(150,180,240,.10), transparent 60%),
+    radial-gradient(120% 80% at 50% 122%, rgba(0,0,0,.55), transparent 55%);
+}
+.gallery-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 26vh; pointer-events: none; z-index: 0;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.45)); }
+.gallery-floor::before { content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg, rgba(150,180,240,.05) 0 1px, transparent 1px 8%);
+  transform: perspective(300px) rotateX(60deg); transform-origin: top; opacity: .4; }
+
+.gallery-track {
+  position: relative; z-index: 1; display: flex; align-items: center;
+  gap: clamp(40px, 6vw, 120px); padding: 0 10vw; height: 100vh; will-change: transform;
+}
+.panel { flex: 0 0 auto; position: relative; }
+
+/* foyer */
+.foyer { width: min(680px, 86vw); text-align: center; }
+.foyer-eyebrow { font-size: .64rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ex-rule); }
+.foyer-title { font-family: var(--serif); font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 600; line-height: 1.02; margin: 12px 0 0; color: var(--ex-ink); }
+.foyer-dates { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--ex-rule); margin-top: 8px; }
+.foyer-intro { margin: 22px auto 0; max-width: 52ch; text-align: left; }
+.foyer-intro p { margin: 0; color: var(--ex-soft); font-size: .95rem; line-height: 1.7; }
+.foyer-intro p + p { margin-top: 10px; }
+.foyer-facts { display: flex; justify-content: center; list-style: none; margin: 26px 0 0; padding: 0; }
+.foyer-facts li { padding: 0 22px; } .foyer-facts li + li { border-left: 1px solid var(--ex-border); }
+.foyer-facts b { display: block; font-family: var(--serif); font-size: 1.6rem; color: var(--ex-rule); }
+.foyer-facts span { display: block; margin-top: 4px; font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ex-dim); }
+.foyer-hint { margin-top: 30px; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ex-dim); }
+.foyer-hint span { color: var(--ex-rule); }
+
+/* room divider */
+.room-card { width: min(320px, 74vw); text-align: center; }
+.room-card::before, .room-card::after { content: ""; display: block; width: 40px; height: 1px; margin: 0 auto; background: var(--ex-rule); opacity: .5; }
+.room-card::before { margin-bottom: 18px; } .room-card::after { margin-top: 18px; }
+.room-num { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ex-dim); }
+.room-name { font-family: var(--serif); font-size: clamp(1.6rem, 2.6vw, 2.3rem); font-weight: 600; margin: 8px 0 0; color: var(--ex-ink); }
+.room-sub { font-family: var(--serif); font-style: italic; color: var(--ex-rule); margin-top: 4px; }
+
+/* portrait-era divider — the monarch's obverse announces each era */
+.portrait-card { width: min(360px, 80vw); text-align: center; }
+.portrait-frame { width: clamp(130px, 14vw, 190px); aspect-ratio: 1; margin: 14px auto 4px; }
+.portrait-card .room-name { margin-top: 16px; }
+.portrait-note { margin: 12px auto 0; max-width: 34ch; font-size: .8rem; font-style: italic; line-height: 1.6; color: var(--ex-soft); }
+
+/* a wall of coins */
+.wall { display: flex; align-items: flex-start; justify-content: center; gap: clamp(36px, 5vw, 84px); }
+
+/* framed coin */
+.framed { display: flex; flex-direction: column; align-items: center; position: relative; }
+.framed::before {
+  content: ""; position: absolute; top: -16vh; left: 50%; transform: translateX(-50%);
+  width: 44vh; height: 52vh; pointer-events: none; filter: blur(4px);
+  background: radial-gradient(ellipse 40% 60% at 50% 0%, rgba(240,230,200,.18), transparent 66%);
+  animation: gallery-glow 6s ease-in-out infinite;
+}
+@keyframes gallery-glow { 0%,100% { opacity: .82; } 50% { opacity: 1; } }
+.frame {
+  position: relative; width: clamp(150px, 17vw, 232px); aspect-ratio: 1; border-radius: 50%; padding: 15px; cursor: pointer;
+  background: radial-gradient(circle at 34% 26%, #f0d79a, #b98d3f 46%, #7a5a24 100%);
+  box-shadow: 0 20px 46px rgba(0,0,0,.6), inset 0 2px 4px rgba(255,255,255,.4), inset 0 -6px 12px rgba(0,0,0,.5);
+  transition: transform .45s cubic-bezier(.22,.61,.36,1), box-shadow .45s;
+  perspective: 900px; /* gives the coin real depth as it turns */
+}
+.frame.no-flip { cursor: default; }
+.frame:hover, .frame:focus-visible { transform: translateY(-9px) scale(1.03); box-shadow: 0 32px 60px rgba(0,0,0,.7); outline: none; }
+/* No overflow:hidden here — it would flatten the 3D and break the turn. The
+   circular recess comes from the border-radius background alone. */
+.mat {
+  position: relative; width: 100%; height: 100%; border-radius: 50%;
+  background: radial-gradient(circle at 50% 42%, #12182f, #070b16 78%);
+  box-shadow: inset 0 6px 18px rgba(0,0,0,.7);
+  transform-style: preserve-3d; transition: transform .7s cubic-bezier(.4,.2,.2,1);
+}
+.frame.flipped .mat { transform: rotateY(180deg); }
+.mat .face { position: absolute; inset: 13%; width: 74%; height: 74%; object-fit: contain; backface-visibility: hidden; -webkit-backface-visibility: hidden; filter: drop-shadow(0 8px 14px rgba(0,0,0,.6)); }
+.mat .face.back { transform: rotateY(180deg); }
+.mat.is-empty { display: flex; align-items: center; justify-content: center; }
+.mat.is-empty .coin-ghost { width: 44%; height: auto; fill: none; stroke: var(--ex-rule); stroke-width: 2.5; opacity: .4; }
+.turn-hint { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ex-dim); opacity: .7; pointer-events: none; }
+
+/* plaque */
+.plaque {
+  margin-top: 24px; width: min(290px, 64vw); text-align: center; padding: 13px 16px; border-radius: 5px;
+  background: var(--ex-label); border: 1px solid var(--ex-label-edge); box-shadow: 0 10px 22px rgba(0,0,0,.4); color: #2a2418;
+}
+.plaque h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; line-height: 1.1; color: #231f18; }
+.plaque .yr { display: block; margin-top: 2px; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: #8c1c2b; }
+.plaque .by { display: block; margin-top: 7px; font-size: .78rem; font-style: italic; color: #5a5142; }
+.plaque .meta { display: block; margin-top: 6px; font-size: .68rem; color: #6a614f; line-height: 1.4; }
+.plaque-link { display: inline-block; margin-top: 8px; font-size: .62rem; letter-spacing: .06em; color: #8a6a2f; text-decoration: none; }
+.plaque-link:hover { text-decoration: underline; }
+
+/* exit */
+.exit { width: min(520px, 86vw); text-align: center; }
+.exit-eyebrow { font-size: .64rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ex-rule); }
+.exit-text { margin: 16px auto 0; max-width: 46ch; color: var(--ex-soft); font-size: .9rem; line-height: 1.7; }
+.exit-link { display: inline-block; margin-top: 22px; font-size: .8rem; letter-spacing: .06em; color: var(--ex-rule); text-decoration: none; }
+.exit-link:hover { text-decoration: underline; }
+
+/* chrome */
+.gallery-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(150,180,240,.12); z-index: 4; }
+.gallery-progress span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--ex-rule), #e7cd8f); box-shadow: 0 0 10px var(--ex-rule); }
+.gallery-hint { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 4; font-size: .66rem; letter-spacing: .24em; text-transform: uppercase; color: var(--ex-dim); transition: opacity .4s; }
+.gallery-hint span { color: var(--ex-rule); }
+.gallery-foot { display: flex; gap: 10px; justify-content: center; margin: 26px 0 60px; }
+.gallery-foot .exhibit-btn { font: inherit; font-size: .78rem; padding: 9px 18px; border-radius: 999px; cursor: pointer; text-decoration: none; border: 1px solid var(--panel-border); background: var(--panel); color: var(--ink-dim); transition: border-color .15s, color .15s; }
+.gallery-foot .exhibit-btn:hover { border-color: var(--gold); color: var(--gold-text); }
+
+/* fallback: stack & scroll (narrow screens, reduced motion, or no JS) */
+.gallery-scroll.is-vertical, .gallery-scroll:not(.is-immersive) { height: auto !important; }
+.gallery-scroll.is-vertical .gallery-pin, .gallery-scroll:not(.is-immersive) .gallery-pin { position: static; height: auto; overflow: visible; }
+.gallery-scroll.is-vertical .gallery-track, .gallery-scroll:not(.is-immersive) .gallery-track {
+  flex-direction: column; align-items: center; height: auto; transform: none !important; will-change: auto; gap: 44px; padding: 34px 20px 54px;
+}
+.gallery-scroll.is-vertical .panel, .gallery-scroll:not(.is-immersive) .panel { width: min(760px, 92vw); }
+.gallery-scroll.is-vertical .gallery-progress, .gallery-scroll.is-vertical .gallery-hint, .gallery-scroll.is-vertical .gallery-floor { display: none; }
+.gallery-scroll.is-vertical .framed::before { top: -40px; height: 200px; }
+
+@media (max-width: 520px) { .wall { flex-direction: column; align-items: center; gap: 40px; } }
+@media (prefers-reduced-motion: reduce) { .framed::before { animation: none; } .mat, .frame { transition: none; } }
+@media print {
+  .gallery-scroll { width: auto; margin: 0; }
+  .gallery-pin { position: static !important; height: auto !important; overflow: visible !important; background: #fff; }
+  .gallery-track { display: block !important; transform: none !important; height: auto; padding: 0; }
+  .gallery-progress, .gallery-hint, .gallery-floor, .foyer-hint, .turn-hint { display: none !important; }
+  .panel { width: auto !important; break-inside: avoid; margin-bottom: 24px; }
+  .foyer-title, .room-name, .plaque h3 { color: #000; }
+}
+
+/* ---------- reveal on scroll ----------
+   Sections lift quietly into place as they scroll into view. Driven by a CSS
+   view() timeline — no JavaScript, GPU-composited — and wrapped in @supports so
+   that where the browser lacks it, the rule is skipped and content is simply
+   visible. Motion is never allowed to gate content. Reduced-motion users get
+   no movement at all. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    [data-reveal] {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 4% entry 62%;
+    }
+  }
+}
+@keyframes reveal-rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+
 /* ---------- utility ---------- */
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+.exhibit-foot { text-align: center; margin: 6px 0 60px; }
+.exhibit-foot .exhibit-btn {
+  font: inherit; font-size: .78rem; letter-spacing: .04em; padding: 9px 20px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--panel-border); background: var(--panel); color: var(--ink-dim);
+  transition: border-color .15s, color .15s;
+}
+.exhibit-foot .exhibit-btn:hover { border-color: var(--gold); color: var(--gold-text); }

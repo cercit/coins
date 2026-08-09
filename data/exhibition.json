@@ -1,0 +1,209 @@
+{
+  "_comment": "Hand-written exhibition reference data, merged with data/collection.json at render time. Design, designer and edge-inscription facts follow the Royal Mint's published design list. Keys under 'designs' match the design name in a coin's variant field; a 'Design|Year' key overrides the plain design key when the same design was re-cut by a different artist.",
+  "series": [
+    {
+      "slug": "round-pound",
+      "name": "The Round Pound",
+      "subtitle": "United Kingdom, 1983–2015",
+      "countrySlug": "gb",
+      "iso2": "gb",
+      "theme": "uk",
+      "years": "1983 – 2015",
+      "lede": "Thirty-four years of British coinage on a single denomination — a new reverse almost every year, cycling through the four nations.",
+      "match": {
+        "countrySlug": "gb",
+        "issuerSlug": "united-kingdom",
+        "denomination": "1 Pound",
+        "shape": "Round",
+        "yearMax": 2015
+      },
+      "intro": [
+        "The round pound replaced the £1 note in April 1983 and ran for thirty-four years. The Royal Mint treated its reverse as a rolling canvas — a new design almost every year, cycling through the four nations.",
+        "It is one of the few modern coins a collector completes by design rather than by date. Each is shown beside the artist who cut it, the nation it stands for, and the motto milled on its edge."
+      ],
+      "closing": "The round pound was demonetised in October 2017, replaced by the twelve-sided bimetallic pound. Coins of that new type are held in this collection but are not part of this exhibition."
+    }
+  ],
+  "portraits": {
+    "2nd portrait": {
+      "label": "Second portrait",
+      "designer": "Arnold Machin",
+      "years": "1983–1984",
+      "note": "The Queen wearing the ‘Girls of Great Britain and Ireland’ tiara."
+    },
+    "3rd portrait": {
+      "label": "Third portrait",
+      "designer": "Raphael Maklouf",
+      "years": "1985–1997",
+      "note": "A crowned portrait in the George IV State Diadem, signed RDM."
+    },
+    "4th portrait": {
+      "label": "Fourth portrait",
+      "designer": "Ian Rank-Broadley",
+      "years": "1998–2015",
+      "note": "A closer, unidealised profile signed IRB."
+    },
+    "5th portrait": {
+      "label": "Fifth portrait",
+      "designer": "Jody Clark",
+      "years": "2015–2016",
+      "note": "The final circulating portrait of Elizabeth II, signed JC."
+    }
+  },
+  "edges": {
+    "DECUS ET TUTAMEN": "‘An ornament and a safeguard’ — a motto for milled edges, which were cut to make clipping detectable.",
+    "NEMO ME IMPUNE LACESSIT": "‘No one provokes me with impunity’ — the motto of the Order of the Thistle, for Scotland.",
+    "PLEIDIOL WYF I'M GWLAD": "‘True am I to my country’ — from the Welsh national anthem.",
+    "DOMINE DIRIGE NOS": "‘Lord, guide us’ — the motto of the City of London.",
+    "PRO TANTO QUID RETRIBUAMUS": "‘What shall we give in return for so much’ — the motto of Belfast.",
+    "NISI DOMINUS FRUSTRA": "‘Without the Lord, all is in vain’ — the motto of Edinburgh.",
+    "Y DDRAIG GOCH DDYRY CYCHWYN": "‘The red dragon will show the way’ — the motto of Cardiff.",
+    "Decorative pattern": "The bridge series carried a decorative milled pattern in place of a motto."
+  },
+  "designs": {
+    "Royal Arms": {
+      "designer": "Eric Sewell",
+      "represents": "United Kingdom",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "The full achievement of the Royal Arms — the design that opened the series in 1983 and was brought back in 1993, 1998 and 2003. The 1998 striking never entered circulation: it was issued only in collector sets, which makes it the scarcest date of the whole series."
+    },
+    "Royal Arms|2015": {
+      "designer": "Timothy Noad",
+      "represents": "United Kingdom",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "Not a reissue of Sewell's arms but a new design: Noad raises the lion and unicorn and works the four national flowers into the field. It was the last design struck on a round pound."
+    },
+    "Scottish Thistle": {
+      "designer": "Leslie Durbin",
+      "represents": "Scotland",
+      "edge": "NEMO ME IMPUNE LACESSIT",
+      "note": "A thistle encircled by the royal diadem, from Durbin's floral set for the four nations."
+    },
+    "Welsh Leek": {
+      "designer": "Leslie Durbin",
+      "represents": "Wales",
+      "edge": "PLEIDIOL WYF I'M GWLAD",
+      "note": "A leek within the royal diadem."
+    },
+    "Northern Irish Flax": {
+      "designer": "Leslie Durbin",
+      "represents": "Northern Ireland",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "The flax plant, Northern Ireland's emblem, within the royal diadem."
+    },
+    "English Oak": {
+      "designer": "Leslie Durbin",
+      "represents": "England",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "An oak tree within the royal diadem, closing Durbin's four-nation cycle."
+    },
+    "Crowned Royal Shield": {
+      "designer": "Derek Gorringe",
+      "represents": "United Kingdom",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "A one-year type: the shield of the Royal Arms beneath a crown, struck only in 1988."
+    },
+    "Scottish Lion": {
+      "designer": "Norman Sillman",
+      "represents": "Scotland",
+      "edge": "NEMO ME IMPUNE LACESSIT",
+      "note": "The lion rampant within a double tressure, from Sillman's heraldic set."
+    },
+    "Welsh Dragon": {
+      "designer": "Norman Sillman",
+      "represents": "Wales",
+      "edge": "PLEIDIOL WYF I'M GWLAD",
+      "note": "The dragon passant of Wales."
+    },
+    "Celtic Cross": {
+      "designer": "Norman Sillman",
+      "represents": "Northern Ireland",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "A Celtic cross with a pimpernel flower and a torc."
+    },
+    "English Three Lions": {
+      "designer": "Norman Sillman",
+      "represents": "England",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "Three lions passant guardant, the arms of England."
+    },
+    "Forth Bridge": {
+      "designer": "Edwina Ellis",
+      "represents": "Scotland",
+      "edge": "Decorative pattern",
+      "note": "The first of four bridges. Ellis engraved each as a piece of engineering rather than heraldry."
+    },
+    "Menai Bridge": {
+      "designer": "Edwina Ellis",
+      "represents": "Wales",
+      "edge": "Decorative pattern",
+      "note": "Telford's suspension bridge over the Menai Strait."
+    },
+    "Egyptian Arch Bridge": {
+      "designer": "Edwina Ellis",
+      "represents": "Northern Ireland",
+      "edge": "Decorative pattern",
+      "note": "The Egyptian Arch railway bridge at Newry."
+    },
+    "Gateshead Millennium Bridge": {
+      "designer": "Edwina Ellis",
+      "represents": "England",
+      "edge": "Decorative pattern",
+      "note": "The tilting footbridge over the Tyne — the only modern structure in the bridge set."
+    },
+    "Royal Shield": {
+      "designer": "Matthew Dent",
+      "represents": "United Kingdom",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "The whole shield of the Royal Arms. Dent's 2008 redesign broke that shield across the six smaller denominations, so the pound carries the complete device the others fragment."
+    },
+    "London": {
+      "designer": "Stuart Devlin",
+      "represents": "London",
+      "edge": "DOMINE DIRIGE NOS",
+      "note": "A capital-cities badge: the arms of the City of London."
+    },
+    "Belfast": {
+      "designer": "Stuart Devlin",
+      "represents": "Belfast",
+      "edge": "PRO TANTO QUID RETRIBUAMUS",
+      "note": "A capital-cities badge for Belfast."
+    },
+    "Edinburgh": {
+      "designer": "Stuart Devlin",
+      "represents": "Edinburgh",
+      "edge": "NISI DOMINUS FRUSTRA",
+      "note": "A capital-cities badge for Edinburgh."
+    },
+    "Cardiff": {
+      "designer": "Stuart Devlin",
+      "represents": "Cardiff",
+      "edge": "Y DDRAIG GOCH DDYRY CYCHWYN",
+      "note": "A capital-cities badge for Cardiff."
+    },
+    "Leek and Daffodil": {
+      "designer": "Timothy Noad",
+      "represents": "Wales",
+      "edge": "PLEIDIOL WYF I'M GWLAD",
+      "note": "Noad's floral emblems set: the leek and daffodil of Wales, crowned."
+    },
+    "Rose and Oak": {
+      "designer": "Timothy Noad",
+      "represents": "England",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "The rose and oak of England, crowned."
+    },
+    "Flax and Shamrock": {
+      "designer": "Timothy Noad",
+      "represents": "Northern Ireland",
+      "edge": "DECUS ET TUTAMEN",
+      "note": "The flax and shamrock of Northern Ireland, crowned."
+    },
+    "Thistle and Bluebell": {
+      "designer": "Timothy Noad",
+      "represents": "Scotland",
+      "edge": "NEMO ME IMPUNE LACESSIT",
+      "note": "The thistle and bluebell of Scotland, crowned."
+    }
+  }
+}

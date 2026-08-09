@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup — Virtual Museum concept</title>
+<style>
+  :root{
+    --wall1:#111a38; --wall2:#0a1024; --wall3:#060913;
+    --gold:#c9a15a; --gold-bright:#e7cd8f; --ink:#eef2fa; --dim:#93a6cd;
+    --plaque:#f4efe2; --plaque-ink:#241f18; --plaque-edge:#d8cdb2;
+    --serif:'Cormorant Garamond', Georgia, serif; --sans:'Inter',-apple-system,'Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:var(--sans); color:var(--ink); background:#05070f; overflow:hidden;
+    height:100vh;
+  }
+  /* ---- the hall ---- */
+  .hall{
+    position:relative; height:100vh; overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 50% 8%, var(--wall1), var(--wall2) 46%, var(--wall3) 100%);
+  }
+  /* faint damask so the wall isn't a flat fill */
+  .hall::before{
+    content:""; position:absolute; inset:0; opacity:.05; pointer-events:none;
+    background-image:radial-gradient(circle at 50% 50%, var(--gold) 0 1px, transparent 2px);
+    background-size:34px 34px;
+    -webkit-mask-image:linear-gradient(#000, transparent 62%); mask-image:linear-gradient(#000, transparent 62%);
+  }
+  /* the floor, in perspective */
+  .floor{
+    position:absolute; left:0; right:0; bottom:0; height:30vh; pointer-events:none;
+    background:linear-gradient(180deg, #0a0e1c 0%, #05070f 100%);
+    box-shadow:inset 0 40px 60px -40px rgba(0,0,0,.9);
+  }
+  .floor::before{ /* converging floor lines */
+    content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(90deg, rgba(150,180,240,.05) 0 1px, transparent 1px 9%);
+    transform:perspective(340px) rotateX(58deg); transform-origin:top; opacity:.5;
+  }
+  /* picture rail */
+  .rail{ position:absolute; left:0; right:0; top:16vh; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); opacity:.3; }
+
+  /* ---- top chrome ---- */
+  .topbar{
+    position:absolute; top:0; left:0; right:0; z-index:5; display:flex; align-items:center;
+    justify-content:space-between; padding:18px 28px; font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--dim);
+  }
+  .topbar .brand{color:var(--gold)}
+  .room-name{font-family:var(--serif); font-size:1.05rem; letter-spacing:.14em; color:var(--ink); text-transform:none}
+
+  /* ---- the wall of coins ---- */
+  .wall{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    gap:clamp(40px,7vw,120px); padding:0 8vw;
+  }
+  .exhibit{
+    position:relative; display:flex; flex-direction:column; align-items:center;
+    animation:rise .9s cubic-bezier(.22,.61,.36,1) both;
+  }
+  .exhibit:nth-child(2){animation-delay:.12s}
+  @keyframes rise{from{opacity:0; transform:translateY(26px)} to{opacity:1; transform:none}}
+
+  /* the spotlight cone */
+  .exhibit::before{
+    content:""; position:absolute; top:-14vh; left:50%; width:46vh; height:52vh; transform:translateX(-50%);
+    background:radial-gradient(ellipse 40% 60% at 50% 0%, rgba(240,230,200,.20), transparent 66%);
+    pointer-events:none; filter:blur(4px);
+    animation:glow 6s ease-in-out infinite;
+  }
+  @keyframes glow{0%,100%{opacity:.85} 50%{opacity:1}}
+
+  /* the frame + coin */
+  .frame{
+    position:relative; width:clamp(180px,20vw,260px); aspect-ratio:1; border-radius:50%;
+    padding:16px; cursor:pointer;
+    background:
+      radial-gradient(circle at 34% 26%, #f0d79a, #b98d3f 46%, #7a5a24 100%);
+    box-shadow:0 20px 50px rgba(0,0,0,.6), inset 0 2px 4px rgba(255,255,255,.4), inset 0 -6px 12px rgba(0,0,0,.5);
+    transition:transform .5s cubic-bezier(.22,.61,.36,1), box-shadow .5s;
+    transform-style:preserve-3d;
+  }
+  .frame:hover{ transform:translateY(-10px) scale(1.03); box-shadow:0 34px 66px rgba(0,0,0,.7); }
+  .mat{
+    position:relative; width:100%; height:100%; border-radius:50%; overflow:hidden;
+    background:radial-gradient(circle at 50% 42%, #12182f, #070b16 78%);
+    box-shadow:inset 0 6px 20px rgba(0,0,0,.7);
+    transform-style:preserve-3d; transition:transform .7s cubic-bezier(.4,.2,.2,1);
+  }
+  .frame.flipped .mat{ transform:rotateY(180deg); }
+  .mat img{
+    position:absolute; inset:14%; width:72%; height:72%; object-fit:contain; backface-visibility:hidden;
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,.6));
+    animation:bob 7s ease-in-out infinite;
+  }
+  .mat img.back{ transform:rotateY(180deg); }
+  @keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)}}
+
+  .flip-hint{position:absolute; bottom:8px; left:50%; transform:translateX(-50%); font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:var(--dim); opacity:.7}
+
+  /* the plaque */
+  .plaque{
+    margin-top:26px; width:min(320px,68vw); background:var(--plaque); color:var(--plaque-ink);
+    border:1px solid var(--plaque-edge); border-radius:5px; padding:14px 18px; text-align:center;
+    box-shadow:0 10px 24px rgba(0,0,0,.4);
+  }
+  .plaque h3{font-family:var(--serif); font-size:1.28rem; font-weight:600; line-height:1.1}
+  .plaque .yr{display:block; margin-top:2px; font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:#8c1c2b}
+  .plaque .by{margin-top:8px; font-size:.8rem; font-style:italic; color:#5a5142}
+  .plaque .meta{margin-top:8px; padding-top:8px; border-top:1px solid var(--plaque-edge); font-size:.72rem; color:#6a614f; letter-spacing:.02em}
+
+  /* ---- navigation ---- */
+  .nav{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:6; width:54px; height:54px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--dim);
+    background:rgba(15,22,48,.5); border:1px solid rgba(150,180,240,.2); backdrop-filter:blur(6px);
+    font-size:1.4rem; transition:all .18s;
+  }
+  .nav:hover{color:#06101f; background:var(--gold); border-color:var(--gold)}
+  .nav.prev{left:26px} .nav.next{right:26px}
+
+  .walkbar{
+    position:absolute; bottom:26px; left:50%; transform:translateX(-50%); z-index:6; display:flex; align-items:center; gap:14px;
+    padding:9px 20px; border-radius:999px; background:rgba(10,16,40,.6); border:1px solid rgba(150,180,240,.18); backdrop-filter:blur(6px);
+  }
+  .walkbar .label{font-family:var(--serif); font-size:.95rem; letter-spacing:.06em}
+  .walkbar .label b{color:var(--gold)}
+  .dots{display:flex; gap:5px}
+  .dots i{width:6px; height:6px; border-radius:50%; background:rgba(150,180,240,.3)}
+  .dots i.on{background:var(--gold); box-shadow:0 0 8px var(--gold)}
+
+  .badge{
+    position:absolute; top:64px; left:50%; transform:translateX(-50%); z-index:5; text-align:center;
+    animation:rise 1s ease both;
+  }
+  .badge .eyebrow{font-size:.62rem; letter-spacing:.34em; text-transform:uppercase; color:var(--gold)}
+  .badge h1{font-family:var(--serif); font-size:clamp(1.8rem,3.4vw,2.8rem); font-weight:600; margin-top:6px}
+  .badge .sub{font-family:var(--serif); font-style:italic; color:var(--dim); margin-top:2px; font-size:1rem}
+
+  .note{position:absolute; bottom:8px; left:0; right:0; text-align:center; font-size:.62rem; letter-spacing:.1em; color:#465a86; z-index:7}
+</style>
+</head>
+<body>
+<div class="hall">
+  <div class="rail"></div>
+  <div class="floor"></div>
+
+  <div class="topbar">
+    <span class="brand">◦ World of Coins · Exhibition</span>
+    <span class="room-name">Gallery I — The Reigning Arms</span>
+    <span>Wall 1 / 16</span>
+  </div>
+
+  <div class="badge">
+    <p class="eyebrow">United Kingdom · 1983–2015</p>
+    <h1>The Round Pound</h1>
+    <p class="sub">walk the gallery, wall by wall</p>
+  </div>
+
+  <div class="wall">
+    <div class="exhibit">
+      <div class="frame" onclick="this.classList.toggle('flipped')">
+        <div class="mat">
+          <img src="assets/coins/1389_front.webp" alt="Royal Arms obverse">
+          <img class="back" src="assets/coins/1389_back.webp" alt="Royal Arms reverse">
+        </div>
+        <span class="flip-hint">click to turn</span>
+      </div>
+      <div class="plaque">
+        <h3>Royal Arms<span class="yr">1983 · One Pound</span></h3>
+        <p class="by">Designed by Eric Sewell</p>
+        <p class="meta">Nickel-brass · DECUS ET TUTAMEN · KM# 933</p>
+      </div>
+    </div>
+
+    <div class="exhibit">
+      <div class="frame" onclick="this.classList.toggle('flipped')">
+        <div class="mat">
+          <img src="assets/coins/1393_front.webp" alt="Scottish Thistle obverse">
+          <img class="back" src="assets/coins/1393_back.webp" alt="Scottish Thistle reverse">
+        </div>
+        <span class="flip-hint">click to turn</span>
+      </div>
+      <div class="plaque">
+        <h3>Scottish Thistle<span class="yr">1984 · One Pound</span></h3>
+        <p class="by">Designed by Leslie Durbin</p>
+        <p class="meta">Nickel-brass · NEMO ME IMPUNE LACESSIT · KM# 934</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav prev" title="Previous wall">‹</div>
+  <div class="nav next" title="Next wall">›</div>
+
+  <div class="walkbar">
+    <span class="label">Wall <b>1</b> of 16</span>
+    <span class="dots"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span>
+  </div>
+
+  <p class="note">MOCKUP — concept only. Real coins, proposed layout &amp; motion. Click a coin to turn it.</p>
+</div>
+</body>
+</html>

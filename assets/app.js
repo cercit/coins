@@ -64,6 +64,7 @@
   function route() {
     var parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
     if (parts[0] === 'c' && parts[1]) return { view: 'entity', country: parts[1], issuer: parts[2] || null };
+    if (parts[0] === 'x') return { view: 'exhibition', series: parts[1] || null, page: parts[2] || '1' };
     return { view: 'home' };
   }
 
@@ -74,6 +75,11 @@
   function render() {
     if (!DATA) return;
     var r = route();
+    if (r.view === 'exhibition') {
+      renderExhibition(r);
+      window.scrollTo(0, 0);
+      return;
+    }
     if (r.view === 'entity') {
       var country = findCountry(r.country);
       if (!country) return notFound();
@@ -111,23 +117,19 @@
         ' countries and ' + DATA.issuerCount + ' separate issuing authorities. Open a drawer to begin.</p>' +
       '</section>' +
       mapSectionMarkup() +
-      '<div class="controls">' +
-        '<div class="search-box">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>' +
-        '<input type="text" id="search-input" placeholder="Search countries or issuers…" value="' + esc(state.query) + '" autocomplete="off">' +
-        '</div>' +
-        '<div class="chips">' + REGION_ORDER.map(function (reg) {
-          return '<button class="chip' + (state.region === reg ? ' active' : '') + '" data-region="' + esc(reg) + '">' + esc(reg) + '</button>';
-        }).join('') + '</div>' +
-      '</div>' +
-      '<div class="section-title"><h2>Countries</h2><span class="count" id="grid-count"></span></div>' +
-      '<div class="flag-grid" id="flag-grid"></div>';
+      '<div class="section-title"><h2>Exhibition</h2><span class="count">now on show</span></div>' +
+      '<div class="gallery-cards" id="home-exhibits"><div class="empty">Loading the gallery…</div></div>';
 
-    // The map is always built from the whole collection, never the filtered
-    // list — search and region chips affect only the flag grid below it.
     renderCollectionMap(DATA.countries);
-    wireHomeControls();
-    updateGrid();
+    // The full country catalogue now lives on the Exhibition page; the home
+    // leads with the featured exhibitions instead.
+    loadExhibition(function (ex) {
+      var box = document.getElementById('home-exhibits');
+      if (!box) return;
+      box.innerHTML = (ex && ex.series && ex.series.length)
+        ? ex.series.map(function (s) { return exhibitCard(ex, s); }).join('')
+        : '<div class="empty">No exhibitions yet.</div>';
+    });
   }
 
   function updateGrid() {
@@ -529,7 +531,7 @@
     var sp = specs(c);
     var mark = c.restrike ? 'Restrike' : (c.replica ? 'Replica' : '');
     var cls = 'coin-card' + (c.hasImage ? '' : ' no-image') + (mark ? ' is-restrike' : '');
-    return '<article class="' + cls + '">' + stage +
+    return '<article class="' + cls + '" data-reveal>' + stage +
       '<div class="coin-info">' +
       '<div class="coin-head"><span class="coin-denom">' + esc(c.denomination) + '</span>' +
       '<span class="coin-year">' + esc(c.year) + '</span></div>' +
@@ -545,6 +547,301 @@
       (c.reference ? '<span class="coin-ref">' + esc(c.reference) + '</span>' : '') +
       (c.numistaUrl ? '<a class="coin-source" href="' + esc(c.numistaUrl) + '" target="_blank" rel="noopener">Numista ↗</a>' : '') +
       '</div></div></article>';
+  }
+
+  /* ---------------- exhibition ----------------
+     A curated, catalogue-style view: one series at a time, laid out as plates.
+     Each plate holds two coins; each coin pairs its obverse/reverse images with
+     an information panel, so a plate reads as a 2x2 block. Design, designer and
+     edge facts come from data/exhibition.json and are joined to the collection
+     by the design name carried in each coin's variant. */
+
+  var EX = null;
+  var PER_PAGE = 2;
+
+  function loadExhibition(cb) {
+    if (EX) return cb(EX);
+    fetch('data/exhibition.json').then(function (r) {
+      if (!r.ok) throw new Error('exhibition ' + r.status);
+      return r.json();
+    }).then(function (d) { EX = d; cb(EX); }).catch(function () { cb(null); });
+  }
+
+  function renderExhibition(r) {
+    app.innerHTML = '<div class="empty">Opening the exhibition…</div>';
+    loadExhibition(function (ex) {
+      if (!ex) return void (app.innerHTML = '<div class="empty">The exhibition could not be loaded. <a href="#/">Back to the cabinet</a>.</div>');
+      var series = r.series && ex.series.filter(function (s) { return s.slug === r.series; })[0];
+      if (!series) return renderExhibitionIndex(ex);
+      renderSeries(ex, series, r.page);
+    });
+  }
+
+  // The foyer: what is currently on show. Each series is announced by one of
+  // its own coins rather than a flag, lit the way it will be inside.
+  function renderExhibitionIndex(ex) {
+    app.innerHTML = crumbs([{ label: 'Home', href: '#/' }, { label: 'Exhibition' }]) +
+      '<header class="gallery-head">' +
+        '<p class="gallery-eyebrow">Now on show</p>' +
+        '<h1 class="gallery-title">The Exhibition</h1>' +
+        '<p class="gallery-dates">Curated series, walked room by room</p>' +
+        '<div class="gallery-intro"><p>A series laid out the way it would sit in a gallery: each coin lit in turn, with a label giving the design, the artist who cut it, and what it was struck to stand for.</p></div>' +
+      '</header>' +
+      '<div class="gallery-cards">' + ex.series.map(function (s) { return exhibitCard(ex, s); }).join('') + '</div>' +
+      // the full catalogue — every coin, browsable by country
+      countriesSectionMarkup();
+    wireHomeControls();
+    updateGrid();
+  }
+
+  // One featured-exhibition card. Its face shows the reverse design (what the
+  // exhibition is about), not the monarch.
+  function exhibitCard(ex, s) {
+    var coins = seriesCoins(s);
+    var hero = coins.filter(function (c) { return c.hasImage; })[0];
+    var img = hero ? (hero.back || hero.front) : null;
+    return '<a class="gallery-card" data-series-theme="' + esc(s.theme || 'default') + '" href="#/x/' + s.slug + '">' +
+      '<div class="gallery-card-coin">' + (img ? '<img loading="lazy" src="' + img + '" alt="A ' + esc(s.name) + ' coin">' : '') + '</div>' +
+      '<div class="gallery-card-body">' +
+        '<p class="gallery-card-country">' + esc(seriesCountryLabel(s)) + '</p>' +
+        '<h2 class="gallery-card-title">' + esc(s.name) + '</h2>' +
+        '<p class="gallery-card-dates">' + esc(s.years || s.subtitle) + '</p>' +
+        (s.lede ? '<p class="gallery-card-lede">' + esc(s.lede) + '</p>' : '') +
+        '<p class="gallery-card-meta"><b>' + coins.length + '</b> objects · <b>' + countDesigns(ex, coins) + '</b> designs</p>' +
+        '<span class="gallery-card-cta">Enter the gallery →</span>' +
+      '</div></a>';
+  }
+
+  // The "Countries" catalogue block: search, region chips and the flag grid of
+  // every country in the collection. Shared markup so home and the exhibition
+  // page render it identically.
+  function countriesSectionMarkup() {
+    return '<div class="controls">' +
+      '<div class="search-box">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>' +
+      '<input type="text" id="search-input" placeholder="Search countries or issuers…" value="' + esc(state.query) + '" autocomplete="off">' +
+      '</div>' +
+      '<div class="chips">' + REGION_ORDER.map(function (reg) {
+        return '<button class="chip' + (state.region === reg ? ' active' : '') + '" data-region="' + esc(reg) + '">' + esc(reg) + '</button>';
+      }).join('') + '</div>' +
+      '</div>' +
+      '<div class="section-title"><h2>Countries</h2><span class="count" id="grid-count"></span></div>' +
+      '<div class="flag-grid" id="flag-grid"></div>';
+  }
+
+  // Pull the coins of a series out of the collection using its match rules.
+  function seriesCoins(series) {
+    var m = series.match || {};
+    var country = DATA.countries.filter(function (c) { return c.slug === m.countrySlug; })[0];
+    if (!country) return [];
+    var out = [];
+    country.issuers.forEach(function (i) {
+      if (m.issuerSlug && i.slug !== m.issuerSlug) return;
+      i.authorities.forEach(function (a) {
+        a.coins.forEach(function (c) {
+          if (m.denomination && c.denomination !== m.denomination) return;
+          if (m.shape && c.shape !== m.shape) return;
+          if (m.yearMax && !(c.yearNum <= m.yearMax)) return;
+          if (m.yearMin && !(c.yearNum >= m.yearMin)) return;
+          out.push(c);
+        });
+      });
+    });
+    return out.sort(function (a, b) { return (a.yearNum || 0) - (b.yearNum || 0) || String(a.variant).localeCompare(String(b.variant)); });
+  }
+
+  // "Elizabeth II (4th portrait; Welsh Dragon)" -> portrait + design
+  function splitVariant(variant) {
+    var m = /\(([^;()]+);\s*([^)]+)\)/.exec(variant || '');
+    return m ? { portrait: m[1].trim(), design: m[2].trim() } : { portrait: '', design: '' };
+  }
+
+  // A design re-cut by a later artist gets a "Design|Year" override.
+  function designInfo(ex, design, year) {
+    return ex.designs[design + '|' + year] || ex.designs[design] || null;
+  }
+
+  // A walk-through gallery: scrolling pans you horizontally down a lit hall,
+  // past a foyer, room title-cards, and walls of framed coins, to an exit.
+  function renderSeries(ex, series) {
+    var coins = seriesCoins(series);
+    var eras = groupPortraits(ex, coins);
+
+    var html = crumbs([{ label: 'All countries', href: '#/' }, { label: 'Exhibition', href: '#/x' }, { label: series.name }]);
+    html += '<div class="exhibit gallery" data-series-theme="' + esc(series.theme || 'default') + '">' +
+      '<div class="gallery-scroll" id="gscroll"><div class="gallery-pin"><div class="gallery-floor"></div>' +
+      '<div class="gallery-track" id="gtrack">';
+
+    // foyer — the entrance
+    html += '<section class="panel foyer" aria-label="Entrance">' +
+      '<p class="foyer-eyebrow">Exhibition · ' + esc(seriesCountryLabel(series)) + '</p>' +
+      '<h1 class="foyer-title">' + esc(series.name) + '</h1>' +
+      '<p class="foyer-dates">' + esc(series.years || series.subtitle) + '</p>' +
+      (series.intro ? '<div class="foyer-intro">' + series.intro.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' : '') +
+      '<ul class="foyer-facts">' +
+        '<li><b>' + coins.length + '</b><span>objects</span></li>' +
+        '<li><b>' + countDesigns(ex, coins) + '</b><span>designs</span></li>' +
+        '<li><b>' + countDesigners(ex, coins) + '</b><span>designers</span></li>' +
+      '</ul>' +
+      '<p class="foyer-hint">Scroll to walk the gallery <span>→</span></p></section>';
+
+    // Each portrait era opens with the monarch's obverse of that period, then
+    // the coins struck under it — chronological, the way the series actually ran.
+    var wallNo = 0, eraNo = 0;
+    eras.forEach(function (era) {
+      eraNo++;
+      var p = era.portrait;
+      html += '<section class="panel portrait-card" aria-label="Portrait era ' + eraNo + '">' +
+        '<p class="room-num">Portrait ' + roman(eraNo) + '</p>' +
+        '<div class="frame no-flip portrait-frame"><div class="mat">' +
+          (era.obverse ? '<img class="face front" loading="lazy" src="' + era.obverse + '" alt="' + esc((p ? p.label : era.key) + ' portrait') + '">' : '') +
+        '</div></div>' +
+        '<h2 class="room-name">' + esc(p ? p.label : era.key) + '</h2>' +
+        (p ? '<p class="room-sub">' + esc(p.designer + ' · ' + p.years) + '</p>' : '') +
+        (p && p.note ? '<p class="portrait-note">' + esc(p.note) + '</p>' : '') +
+        '</section>';
+      chunk(era.coins, 2).forEach(function (pair) {
+        wallNo++;
+        html += '<section class="panel wall" aria-label="Wall ' + wallNo + '">' +
+          pair.map(function (c) { return framedCoin(ex, series, c); }).join('') + '</section>';
+      });
+    });
+
+    // exit
+    html += '<section class="panel exit" aria-label="Exit">' +
+      '<p class="exit-eyebrow">End of the exhibition</p>' +
+      (series.closing ? '<p class="exit-text">' + esc(series.closing) + '</p>' : '') +
+      '<a class="exit-link" href="#/x">← Back to the exhibition hall</a></section>';
+
+    html += '</div>'; // track
+    html += '<div class="gallery-progress" aria-hidden="true"><span id="gbar"></span></div>' +
+      '<p class="gallery-hint" id="ghint">Scroll to explore <span>→</span></p>';
+    html += '</div></div>'; // pin, scroll
+    html += '<div class="gallery-foot"><a class="exhibit-btn" href="#/x">← All exhibitions</a>' +
+      '<button class="exhibit-btn" type="button" onclick="window.print()">Print</button></div>';
+    html += '</div>'; // exhibit
+
+    app.innerHTML = html;
+    wireFrames();
+    setupGalleryScroll();
+  }
+
+  // Group coins by their obverse portrait, in chronological order. Each era
+  // remembers the earliest coin's obverse so the divider can show that portrait.
+  function groupPortraits(ex, coins) {
+    var map = {}, order = [];
+    coins.forEach(function (c) {
+      var key = splitVariant(c.variant).portrait || 'Portrait';
+      if (!map[key]) { map[key] = { key: key, portrait: ex.portraits[key] || null, coins: [], obverse: c.front, minYear: c.yearNum || 9999 }; order.push(key); }
+      map[key].coins.push(c);
+      if ((c.yearNum || 9999) < map[key].minYear) { map[key].minYear = c.yearNum; map[key].obverse = c.front; }
+    });
+    return order.map(function (k) { return map[k]; }).sort(function (a, b) { return a.minYear - b.minYear; });
+  }
+
+  function roman(n) { return ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'][n] || String(n); }
+
+  function wireFrames() {
+    each('.frame:not(.no-flip)', function (f) {
+      var flip = function () { f.classList.toggle('flipped'); };
+      f.addEventListener('click', flip);
+      f.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); flip(); }
+      });
+    });
+  }
+
+  // Turn vertical scroll into a horizontal walk. On narrow screens or with
+  // reduced motion we skip the pinning entirely and let the panels stack and
+  // scroll normally — the content is identical either way, never gated.
+  function setupGalleryScroll() {
+    var scroll = document.getElementById('gscroll');
+    var track = document.getElementById('gtrack');
+    var bar = document.getElementById('gbar');
+    var hint = document.getElementById('ghint');
+    if (!scroll || !track) return;
+    if (window.innerWidth < 760 || prefersReduce.matches) { scroll.classList.add('is-vertical'); return; }
+    scroll.classList.add('is-immersive');
+
+    var pending = false;
+    function frame() {
+      pending = false;
+      var extra = Math.max(0, track.scrollWidth - window.innerWidth);
+      var span = scroll.offsetHeight - window.innerHeight;
+      var progress = span > 0 ? Math.min(1, Math.max(0, -scroll.getBoundingClientRect().top / span)) : 0;
+      track.style.transform = 'translate3d(' + (-progress * extra).toFixed(1) + 'px,0,0)';
+      if (bar) bar.style.width = (progress * 100).toFixed(2) + '%';
+      if (hint) hint.style.opacity = progress > 0.015 ? '0' : '';
+    }
+    function onScroll() { if (!pending) { pending = true; requestAnimationFrame(frame); } }
+    function layout() {
+      var extra = Math.max(0, track.scrollWidth - window.innerWidth);
+      // vertical scroll length = one screen to read the first panel, plus the
+      // horizontal distance to walk the rest.
+      scroll.style.height = (window.innerHeight + extra) + 'px';
+      frame();
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', layout);
+    // fonts/images can change track width after first paint
+    setTimeout(layout, 60);
+    layout();
+    scroll.__galleryLayout = layout; // exposed for tests
+  }
+
+  function chunk(arr, n) {
+    var out = [];
+    for (var i = 0; i < arr.length; i += n) out.push(arr.slice(i, i + n));
+    return out;
+  }
+
+  function countDesigns(ex, coins) {
+    var s = {};
+    coins.forEach(function (c) { var d = splitVariant(c.variant).design; if (d) s[d] = 1; });
+    return Object.keys(s).length;
+  }
+  function countDesigners(ex, coins) {
+    var s = {};
+    coins.forEach(function (c) {
+      var v = splitVariant(c.variant);
+      var d = designInfo(ex, v.design, c.yearNum);
+      if (d && d.designer) s[d.designer] = 1;
+    });
+    return Object.keys(s).length;
+  }
+
+  // A single coin hung in the hall: spotlit in a gold frame, a printed plaque
+  // below it. Clicking the frame turns the coin to its reverse. The plaque is
+  // brief, the way a museum label is — the fuller catalogue stays a click away.
+  function framedCoin(ex, series, c) {
+    var v = splitVariant(c.variant);
+    var d = designInfo(ex, v.design, c.yearNum) || {};
+    var label = (v.design || c.denomination) + ', ' + c.year;
+
+    // This is an exhibition of the reverse DESIGNS, and the plaque names them, so
+    // the design faces out by default; the monarch's obverse is the side you turn to.
+    var mat = c.hasImage
+      ? '<div class="mat"><img class="face front" loading="lazy" src="' + c.back + '" alt="' + esc(label) + ', reverse design">' +
+        '<img class="face back" loading="lazy" src="' + c.front + '" alt="' + esc(label) + ', obverse portrait"></div>'
+      : '<div class="mat is-empty"><svg class="coin-ghost" viewBox="0 0 100 100" aria-hidden="true">' + SHAPE_ICON[shapeKey(c.shape)] + '</svg></div>';
+
+    var frame = c.hasImage
+      ? '<div class="frame" tabindex="0" role="button" aria-label="Turn ' + esc(label) + ' to see the portrait">' + mat + '<span class="turn-hint">turn ↻</span></div>'
+      : '<div class="frame no-flip">' + mat + '</div>';
+
+    return '<figure class="framed">' + frame +
+      '<figcaption class="plaque">' +
+        '<h3>' + esc(v.design || c.denomination) + '</h3>' +
+        '<span class="yr">' + esc(c.year) + ' · ' + esc(c.denomination) + '</span>' +
+        (d.designer ? '<span class="by">Designed by ' + esc(d.designer) + '</span>' : '') +
+        '<span class="meta">' + esc([c.composition, d.edge].filter(Boolean).join(' · ') || '') + '</span>' +
+        (c.numistaUrl ? '<a class="plaque-link" href="' + esc(c.numistaUrl) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Full record ↗</a>' : '') +
+      '</figcaption></figure>';
+  }
+
+  function seriesCountryLabel(series) {
+    var c = DATA.countries.filter(function (x) { return x.slug === series.countrySlug; })[0];
+    return c ? c.label : series.name;
   }
 
   function each(sel, fn) { Array.prototype.forEach.call(document.querySelectorAll(sel), fn); }
