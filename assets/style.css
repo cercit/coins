@@ -154,7 +154,9 @@ button { font-family: inherit; }
 .section-lede { color: var(--ink-dim); font-size: .92rem; max-width: 640px; margin: -10px 0 18px; }
 
 /* ---------- flag grid ---------- */
-.flag-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+.flag-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+@media (max-width: 900px) { .flag-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 500px) { .flag-grid { grid-template-columns: repeat(2, 1fr); } }
 .flag-tile {
   display: block; text-decoration: none; color: inherit; background: var(--panel);
   border: 1px solid var(--panel-border); border-radius: var(--radius-md); overflow: hidden;

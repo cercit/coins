@@ -65,6 +65,7 @@
     var parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
     if (parts[0] === 'c' && parts[1]) return { view: 'entity', country: parts[1], issuer: parts[2] || null };
     if (parts[0] === 'x') return { view: 'exhibition', series: parts[1] || null, page: parts[2] || '1' };
+    if (parts[0] === 'countries') return { view: 'countries' };
     return { view: 'home' };
   }
 
@@ -92,6 +93,8 @@
       } else {
         renderIssuer(country, country.issuers[0], true);
       }
+    } else if (r.view === 'countries') {
+      renderCountries();
     } else {
       renderHome();
     }
@@ -118,8 +121,7 @@
       '</section>' +
       mapSectionMarkup() +
       '<div class="section-title"><h2>Exhibition</h2><span class="count">now on show</span></div>' +
-      '<div class="gallery-cards" id="home-exhibits"><div class="empty">Loading the gallery…</div></div>' +
-      countriesSectionMarkup();
+      '<div class="gallery-cards" id="home-exhibits"><div class="empty">Loading the gallery…</div></div>';
 
     renderCollectionMap(DATA.countries);
     loadExhibition(function (ex) {
@@ -129,6 +131,15 @@
         ? ex.series.map(function (s) { return exhibitCard(ex, s); }).join('')
         : '<div class="empty">No exhibitions yet.</div>';
     });
+  }
+
+  function renderCountries() {
+    app.innerHTML = crumbs([{ label: 'Home', href: '#/' }, { label: 'Countries' }]) +
+      '<header class="gallery-head">' +
+        '<h1 class="gallery-title">Coins from ' + DATA.countryCount + ' countries</h1>' +
+        '<div class="gallery-intro"><p>The full catalogue, sorted by where each coin was struck. Flags link through to issuers, rulers and individual pieces.</p></div>' +
+      '</header>' +
+      countriesSectionMarkup();
     wireHomeControls();
     updateGrid();
   }
@@ -596,11 +607,7 @@
         '<p class="gallery-dates">Curated series, walked room by room</p>' +
         '<div class="gallery-intro"><p>A series laid out the way it would sit in a gallery: each coin lit in turn, with a label giving the design, the artist who cut it, and what it was struck to stand for.</p></div>' +
       '</header>' +
-      '<div class="gallery-cards">' + ex.series.map(function (s) { return exhibitCard(ex, s); }).join('') + '</div>' +
-      // the full catalogue — every coin, browsable by country
-      countriesSectionMarkup();
-    wireHomeControls();
-    updateGrid();
+      '<div class="gallery-cards">' + ex.series.map(function (s) { return exhibitCard(ex, s); }).join('') + '</div>';
   }
 
   // One featured-exhibition card. Its face shows the reverse design (what the
