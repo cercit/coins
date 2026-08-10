@@ -32,10 +32,30 @@ const COUNTRY_FLAGS = {
   'Timor-Leste': 'tl', 'Tunisia': 'tn', 'Turkey': 'tr', 'United Arab Emirates': 'ae',
   'United Kingdom': 'gb', 'United States': 'us', 'Uzbekistan': 'uz',
   'Yemen': 'ye', 'Zambia': 'zm', 'Zimbabwe': 'zw',
-  // Currency unions, colonial boards and dissolved states — badge, not flag.
-  'British Crown dependencies': null, 'British West Africa': null,
-  'Central African States': null, 'East Africa': null, 'French Indochina': null,
-  'French West Africa': null, 'Western African States': null, 'Yugoslavia': null,
+  // Currency unions, colonial boards and dissolved states.
+  // Where a recognisable successor flag exists on flagcdn, use it; otherwise null → badge.
+  'British Crown dependencies': 'im',
+  'British West Africa': null,
+  'Central African States': null,
+  'East Africa': null,
+  'French Indochina': null,
+  'French West Africa': null,
+  'Western African States': null,
+  'Yugoslavia': null,
+};
+
+// Historical / regional entities that should light up modern polygons on the
+// world map. Each key is a Numista country name; value is an array of ISO2
+// codes whose SVG paths will carry that entity's tooltip and link.
+const MAP_ALIASES = {
+  'Yugoslavia': ['rs', 'ba', 'hr', 'si', 'me', 'mk'],
+  'British Crown dependencies': ['im'],
+  'East Africa': ['ke', 'ug', 'tz'],
+  'French Indochina': ['vn', 'la', 'kh'],
+  'British West Africa': ['ng', 'gh', 'sl', 'gm'],
+  'French West Africa': ['sn', 'ml', 'ci', 'ne', 'bf', 'gn', 'bj', 'tg', 'mr'],
+  'Central African States': ['cm', 'ga', 'td', 'cg', 'cf', 'gq'],
+  'Western African States': ['sn', 'ml', 'ci', 'ne', 'bf', 'gn', 'bj', 'tg'],
 };
 
 const COUNTRY_SLUGS = {
@@ -195,4 +215,4 @@ const ISSUER_META = {
   'Western African States': { label: 'West African States', era: '1959–date' },
 };
 
-module.exports = { COUNTRY_FLAGS, COUNTRY_SLUGS, COUNTRY_LABELS, REGIONS, ISSUER_FLAGS, ISSUER_META };
+module.exports = { COUNTRY_FLAGS, COUNTRY_SLUGS, COUNTRY_LABELS, REGIONS, ISSUER_FLAGS, ISSUER_META, MAP_ALIASES };

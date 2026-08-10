@@ -14,18 +14,29 @@
     return String(value == null ? '' : value).trim().toLowerCase();
   }
 
-  // Keyed lookup of only the countries that belong on the geographic layer:
-  // they have an ISO code AND at least one coin. Historical/regional records
-  // (British India, princely states, currency unions) carry no ISO code and are
-  // intentionally left off the map — they live beneath their parent country.
+  // Keyed lookup of countries that belong on the geographic layer.
+  // Modern countries with an ISO code map directly. Historical / regional
+  // entities (Yugoslavia, East Africa, currency unions) carry a mapIso array
+  // instead — their coins light up the successor countries' polygons.
   function buildCountryIndex(countries) {
     var index = {};
     (countries || []).forEach(function (c) {
       if (!c) return;
-      var key = normaliseIso(c.iso2);
-      if (!key) return;
       if (!(Number(c.count) > 0)) return;
-      index[key] = c;
+      var key = normaliseIso(c.iso2);
+      if (key) {
+        index[key] = c;
+        return;
+      }
+      // Historical entity with mapIso aliases — overlay onto modern polygons.
+      var aliases = c.mapIso;
+      if (!aliases || !aliases.length) return;
+      aliases.forEach(function (iso) {
+        var k = normaliseIso(iso);
+        if (!k) return;
+        if (index[k]) return; // modern country already owns this polygon
+        index[k] = c;
+      });
     });
     return index;
   }
