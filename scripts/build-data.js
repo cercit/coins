@@ -7,7 +7,7 @@
 const path = require('path');
 const fs = require('fs');
 const { parse } = require('csv-parse/sync');
-const { COUNTRY_FLAGS, COUNTRY_SLUGS, COUNTRY_LABELS, REGIONS, ISSUER_FLAGS, ISSUER_META, MAP_ALIASES } = require('./registry');
+const { COUNTRY_FLAGS, COUNTRY_SLUGS, COUNTRY_LABELS, REGIONS, ISSUER_FLAGS, ISSUER_META, MAP_ALIASES, LOCAL_FLAGS } = require('./registry');
 
 const CSV_PATH = process.env.COINS_CSV || 'C:/Users/samsm/Downloads/dhuryodhana_export (2).csv';
 const OUT_PATH = path.join(__dirname, '..', 'data', 'collection.json');
@@ -164,6 +164,7 @@ const countries = Object.entries(tree).map(([country, cNode]) => {
   const all = issuers.flatMap(i => i.authorities.flatMap(a => a.coins));
   const iso2 = COUNTRY_FLAGS[country] ?? null;
   const mapIso = MAP_ALIASES[country] || null;
+  const localFlag = LOCAL_FLAGS[country] || null;
   const slug = COUNTRY_SLUGS[country] || iso2 || slugify(country);
   return {
     slug,
@@ -171,7 +172,8 @@ const countries = Object.entries(tree).map(([country, cNode]) => {
     rawLabel: country,
     iso2,
     mapIso,
-    badge: iso2 ? null : (COUNTRY_LABELS[country] || country).split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase(),
+    localFlag,
+    badge: (iso2 || localFlag) ? null : (COUNTRY_LABELS[country] || country).split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase(),
     region: REGIONS[country] || 'Other',
     count: all.length,
     ...span(all),

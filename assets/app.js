@@ -331,9 +331,16 @@
 
   function eachNode(nodeList, fn) { Array.prototype.forEach.call(nodeList, fn); }
 
-  function flagMark(iso2, badge, alt, cls) {
-    return iso2
-      ? '<span class="' + cls + '-flag"><img loading="lazy" src="https://flagcdn.com/w320/' + iso2 + '.png" alt="Flag of ' + esc(alt) + '"></span>'
+  function flagSrc(iso2, localFlag) {
+    if (iso2) return 'https://flagcdn.com/w320/' + iso2 + '.png';
+    if (localFlag) return localFlag;
+    return null;
+  }
+
+  function flagMark(iso2, badge, alt, cls, localFlag) {
+    var src = flagSrc(iso2, localFlag);
+    return src
+      ? '<span class="' + cls + '-flag"><img loading="lazy" src="' + src + '" alt="Flag of ' + esc(alt) + '"></span>'
       : '<span class="' + cls + '-badge">' + esc(badge) + '</span>';
   }
 
@@ -341,10 +348,11 @@
     var sub = c.multiIssuer
       ? c.issuerCount + ' issuers · ' + c.count + ' coins'
       : c.count + ' coin' + (c.count === 1 ? '' : 's');
+    var src = flagSrc(c.iso2, c.localFlag);
     return '<a class="flag-tile" href="#/c/' + c.slug + '">' +
       '<div class="flag-img-wrap">' +
-      (c.iso2
-        ? '<img loading="lazy" src="https://flagcdn.com/w320/' + c.iso2 + '.png" alt="Flag of ' + esc(c.label) + '">'
+      (src
+        ? '<img loading="lazy" src="' + src + '" alt="Flag of ' + esc(c.label) + '">'
         : '<span class="tile-badge">' + esc(c.badge) + '</span>') +
       '</div>' +
       '<div class="flag-meta"><span class="flag-name">' + esc(c.label) + '</span>' +
@@ -379,7 +387,7 @@
     var html = crumbs([{ label: 'All countries', href: '#/' }, { label: c.label }]);
 
     html += '<div class="detail-header">' +
-      flagMark(c.iso2, c.badge, c.label, 'detail') +
+      flagMark(c.iso2, c.badge, c.label, 'detail', c.localFlag) +
       '<div class="detail-titles"><h1>' + esc(c.label) + '</h1>' +
       '<div class="era">' + c.issuerCount + ' issuing authorities in this collection</div></div></div>';
 
@@ -413,7 +421,7 @@
   function issuerTile(c, i) {
     var meta = [i.era, i.count + ' coin' + (i.count === 1 ? '' : 's')].filter(Boolean).join(' · ');
     return '<a class="issuer-tile" href="#/c/' + c.slug + '/' + i.slug + '">' +
-      flagMark(i.iso2, i.badge, i.label, 'issuer') +
+      flagMark(i.iso2, i.badge, i.label, 'issuer', i.localFlag) +
       '<span class="issuer-body">' +
       '<span class="issuer-name">' + esc(i.label) + '</span>' +
       '<span class="issuer-meta">' + esc(meta) + '</span>' +
@@ -431,7 +439,7 @@
 
     var showCountryMark = isOnlyIssuer || !issuer.iso2 && !c.multiIssuer;
     html += '<div class="detail-header">' +
-      (isOnlyIssuer ? flagMark(c.iso2, c.badge, c.label, 'detail') : flagMark(issuer.iso2, issuer.badge, issuer.label, 'detail')) +
+      (isOnlyIssuer ? flagMark(c.iso2, c.badge, c.label, 'detail', c.localFlag) : flagMark(issuer.iso2, issuer.badge, issuer.label, 'detail', issuer.localFlag)) +
       '<div class="detail-titles"><h1>' + esc(isOnlyIssuer ? c.label : issuer.label) + '</h1>' +
       (issuer.era ? '<div class="era">' + esc(issuer.era) + '</div>' : '') +
       '</div></div>';

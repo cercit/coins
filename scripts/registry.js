@@ -58,6 +58,17 @@ const MAP_ALIASES = {
   'Western African States': ['sn', 'ml', 'ci', 'ne', 'bf', 'gn', 'bj', 'tg'],
 };
 
+// Local flag images for entities not on flagcdn. Path relative to site root.
+const LOCAL_FLAGS = {
+  'Yugoslavia': 'assets/flags/yugoslavia.png',
+  'East Africa': 'assets/flags/east-africa.png',
+  'French Indochina': 'assets/flags/french-indochina.png',
+  'British West Africa': 'assets/flags/british-west-africa.png',
+  'French West Africa': 'assets/flags/french-west-africa.png',
+  'Central African States': 'assets/flags/central-african-states.png',
+  'Western African States': 'assets/flags/west-african-states.png',
+};
+
 const COUNTRY_SLUGS = {
   'British Crown dependencies': 'british-crown-dependencies',
   'British West Africa': 'british-west-africa',
@@ -215,4 +226,4 @@ const ISSUER_META = {
   'Western African States': { label: 'West African States', era: '1959–date' },
 };
 
-module.exports = { COUNTRY_FLAGS, COUNTRY_SLUGS, COUNTRY_LABELS, REGIONS, ISSUER_FLAGS, ISSUER_META, MAP_ALIASES };
+module.exports = { COUNTRY_FLAGS, COUNTRY_SLUGS, COUNTRY_LABELS, REGIONS, ISSUER_FLAGS, ISSUER_META, MAP_ALIASES, LOCAL_FLAGS };
