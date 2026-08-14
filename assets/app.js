@@ -873,7 +873,7 @@
   }
 
   function framedCoin(ex, series, c, total) {
-    var backName = (series.flip && series.flip.back) || 'the portrait';
+    var backName = (series.flip && series.flip.back) || 'portrait';
     if (c._comingSoon) {
       var csv = splitVariant(c.variant);
       var csd = designInfo(ex, csv.design, c.yearNum) || {};
