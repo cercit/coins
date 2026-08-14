@@ -720,16 +720,18 @@
     var wallNo = 0, eraNo = 0;
     eras.forEach(function (era) {
       eraNo++;
-      var p = era.portrait;
-      html += '<section class="panel portrait-card" aria-label="Portrait era ' + eraNo + '">' +
-        '<p class="room-num">Portrait ' + roman(eraNo) + '</p>' +
-        '<div class="frame no-flip portrait-frame"><div class="mat">' +
-          (era.obverse ? '<img class="face front" loading="lazy" src="' + era.obverse + '" alt="' + esc((p ? p.label : era.key) + ' portrait') + '">' : '') +
-        '</div></div>' +
-        '<h2 class="room-name">' + esc(p ? p.label : era.key) + '</h2>' +
-        (p ? '<p class="room-sub">' + esc(p.designer + ' · ' + p.years) + '</p>' : '') +
-        (p && p.note ? '<p class="portrait-note">' + esc(p.note) + '</p>' : '') +
-        '</section>';
+      if (!series.skipPortraits) {
+        var p = era.portrait;
+        html += '<section class="panel portrait-card" aria-label="Portrait era ' + eraNo + '">' +
+          '<p class="room-num">Portrait ' + roman(eraNo) + '</p>' +
+          '<div class="frame no-flip portrait-frame"><div class="mat">' +
+            (era.obverse ? '<img class="face front" loading="lazy" src="' + era.obverse + '" alt="' + esc((p ? p.label : era.key) + ' portrait') + '">' : '') +
+          '</div></div>' +
+          '<h2 class="room-name">' + esc(p ? p.label : era.key) + '</h2>' +
+          (p ? '<p class="room-sub">' + esc(p.designer + ' · ' + p.years) + '</p>' : '') +
+          (p && p.note ? '<p class="portrait-note">' + esc(p.note) + '</p>' : '') +
+          '</section>';
+      }
       chunk(era.coins, 2).forEach(function (pair) {
         wallNo++;
         html += '<section class="panel wall" aria-label="Wall ' + wallNo + '">' +
@@ -846,12 +848,15 @@
   function framedCoin(ex, series, c) {
     if (c._comingSoon) {
       var csv = splitVariant(c.variant);
+      var csd = designInfo(ex, csv.design, c.yearNum) || {};
       return '<figure class="framed coming-soon">' +
         '<div class="frame no-flip"><div class="mat is-empty"><svg class="coin-ghost" viewBox="0 0 100 100" aria-hidden="true">' + SHAPE_ICON[shapeKey(c.shape)] + '</svg></div></div>' +
         '<figcaption class="plaque">' +
           '<h3>' + esc(csv.design || c.denomination) + '</h3>' +
           '<span class="yr">' + esc(c.year) + ' · ' + esc(c.denomination) + '</span>' +
           '<span class="by coming-soon-tag">Coming soon</span>' +
+          (csd.represents ? '<span class="represents">' + esc(csd.represents) + '</span>' : '') +
+          (csd.note ? '<span class="note">' + esc(csd.note) + '</span>' : '') +
         '</figcaption></figure>';
     }
     var v = splitVariant(c.variant);
@@ -873,8 +878,10 @@
       '<figcaption class="plaque">' +
         '<h3>' + esc(v.design || c.denomination) + '</h3>' +
         '<span class="yr">' + esc(c.year) + ' · ' + esc(c.denomination) + '</span>' +
-        (d.designer ? '<span class="by">Designed by ' + esc(d.designer) + '</span>' : '') +
-        '<span class="meta">' + esc([c.composition, d.edge].filter(Boolean).join(' · ') || '') + '</span>' +
+        (d.represents ? '<span class="represents">' + esc(d.represents) + '</span>' : '') +
+        (!series.compactPlaque && d.designer ? '<span class="by">Designed by ' + esc(d.designer) + '</span>' : '') +
+        (!series.compactPlaque ? '<span class="meta">' + esc([c.composition, d.edge].filter(Boolean).join(' · ') || '') + '</span>' : '') +
+        (d.note ? '<span class="note">' + esc(d.note) + '</span>' : '') +
         (c.numistaUrl ? '<a class="plaque-link" href="' + esc(c.numistaUrl) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Full record ↗</a>' : '') +
       '</figcaption></figure>';
   }

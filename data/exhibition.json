@@ -41,6 +41,8 @@
         "yearMax": 2026,
         "variantPattern": "Year of the"
       },
+      "skipPortraits": true,
+      "compactPlaque": true,
       "comingSoon": [
         {
           "variant": "Year of the Goat",
@@ -245,76 +247,76 @@
       "note": "The thistle and bluebell of Scotland, crowned."
     },
     "Year of the Goat": {
-      "designer": "PBOC Design Team",
-      "represents": "Goat — 8th zodiac animal",
-      "edge": "RMB",
-      "note": "The goat, symbol of gentleness and peace in Chinese culture. This coin opened the current zodiac cycle."
+      "designer": "",
+      "represents": "Goat (羊) — 8th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The goat stands for gentleness, peace and filial piety. In Chinese, the character 羊 (yáng) appears inside 美 (beauty) and 善 (goodness) — the animal is woven into the language itself. People born in goat years are thought to be calm, creative and compassionate. This coin opened the current zodiac cycle in 2015."
     },
     "Year of the Monkey": {
-      "designer": "PBOC Design Team",
-      "represents": "Monkey — 9th zodiac animal",
-      "edge": "RMB",
-      "note": "The monkey, associated with cleverness and agility. In Chinese folklore, the Monkey King Sun Wukong is one of the best-known characters."
+      "designer": "",
+      "represents": "Monkey (猴) — 9th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The monkey is cleverness made physical — quick, curious, hard to pin down. The most famous monkey in Chinese literature is Sun Wukong, the Monkey King of Journey to the West, who outwitted gods and demons alike. People born in monkey years are said to be sharp, inventive and restless."
     },
     "Year of the Rooster": {
-      "designer": "PBOC Design Team",
-      "represents": "Rooster — 10th zodiac animal",
-      "edge": "RMB",
-      "note": "The rooster, symbol of punctuality and fidelity. Its crow at dawn traditionally marks the boundary between night and day."
+      "designer": "",
+      "represents": "Rooster (鸡) — 10th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The rooster's crow splits night from day. In Chinese culture it signals punctuality, honesty and moral courage — the bird that never fails to announce the dawn. Rooster-year people are considered observant, hardworking and outspoken."
     },
     "Year of the Dog": {
-      "designer": "PBOC Design Team",
-      "represents": "Dog — 11th zodiac animal",
-      "edge": "RMB",
-      "note": "The dog, representing loyalty and honesty in the Chinese zodiac."
+      "designer": "",
+      "represents": "Dog (狗) — 11th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The dog is loyalty given form. In Chinese tradition it guards the home and its people without question. Dog-year people are seen as faithful, honest and protective — the friend who shows up when it matters."
     },
     "Year of the Pig": {
-      "designer": "PBOC Design Team",
-      "represents": "Pig — 12th zodiac animal",
-      "edge": "RMB",
-      "note": "The pig closes the twelve-year zodiac cycle. It stands for wealth and good fortune."
+      "designer": "",
+      "represents": "Pig (猪) — 12th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The pig closes each twelve-year cycle. Far from the Western caricature, the Chinese pig stands for wealth, good fortune and a generous spirit. In rural China, a fat pig was the clearest sign of a prosperous household. Pig-year people are thought to be warm, tolerant and lucky in money."
     },
     "Year of the Rat": {
-      "designer": "PBOC Design Team",
-      "represents": "Rat — 1st zodiac animal",
-      "edge": "RMB",
-      "note": "The rat opens a new twelve-year cycle. In Chinese culture it represents resourcefulness and quick thinking."
+      "designer": "",
+      "represents": "Rat (鼠) — 1st of the twelve zodiac animals",
+      "edge": "",
+      "note": "The rat leads the zodiac. Legend says it won first place by riding the ox's back and leaping ahead at the finish line — resourcefulness over brute strength. Rat-year people are considered quick-witted, adaptable and opportunistic in the best sense."
     },
     "Year of the Ox": {
-      "designer": "PBOC Design Team",
-      "represents": "Ox — 2nd zodiac animal",
-      "edge": "RMB",
-      "note": "The ox, a symbol of diligence and determination. Traditionally associated with agriculture and hard work."
+      "designer": "",
+      "represents": "Ox (牛) — 2nd of the twelve zodiac animals",
+      "edge": "",
+      "note": "The ox is the backbone of traditional Chinese agriculture — patient, powerful, uncomplaining. It finished second in the zodiac race because it carried the rat without complaint. Ox-year people are seen as dependable, determined and quietly strong."
     },
     "Year of the Tiger": {
-      "designer": "PBOC Design Team",
-      "represents": "Tiger — 3rd zodiac animal",
-      "edge": "RMB",
-      "note": "The tiger, king of the beasts in Chinese tradition. It stands for courage and strength."
+      "designer": "",
+      "represents": "Tiger (虎) — 3rd of the twelve zodiac animals",
+      "edge": "",
+      "note": "The tiger is king of all beasts in Chinese tradition, not the lion. It represents courage, authority and the power to ward off evil — the character 王 (king) is said to be visible in the stripes on its forehead. Tiger-year people are considered brave, competitive and confident."
     },
     "Year of the Rabbit": {
-      "designer": "PBOC Design Team",
-      "represents": "Rabbit — 4th zodiac animal",
-      "edge": "RMB",
-      "note": "The rabbit, linked to the Moon in Chinese myth through the Jade Rabbit who pounds the elixir of immortality."
+      "designer": "",
+      "represents": "Rabbit (兔) — 4th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The rabbit is tied to the Moon through the legend of the Jade Rabbit (玉兔), who lives on the lunar surface pounding the elixir of immortality. It stands for elegance, mercy and long life. Rabbit-year people are thought to be gentle, diplomatic and quietly ambitious."
     },
     "Year of the Dragon": {
-      "designer": "PBOC Design Team",
-      "represents": "Dragon — 5th zodiac animal",
-      "edge": "RMB",
-      "note": "The dragon, the most revered creature in Chinese culture. Unlike Western dragons, the Chinese dragon is a benevolent symbol of power, strength and good luck."
+      "designer": "",
+      "represents": "Dragon (龙) — 5th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The dragon is the only mythical creature in the zodiac and the most revered. Unlike the fire-breathing menace of Western myth, the Chinese dragon (龙, lóng) is a benevolent force — bringer of rain, guardian of waterways, symbol of imperial authority. Dragon years see a spike in birth rates across East Asia. Dragon-year people are considered ambitious, fearless and destined for greatness."
     },
     "Year of the Snake": {
-      "designer": "PBOC Design Team",
-      "represents": "Snake — 6th zodiac animal",
-      "edge": "RMB",
-      "note": "The snake, associated with wisdom and mystery. It is sometimes called the 'little dragon' in Chinese tradition."
+      "designer": "",
+      "represents": "Snake (蛇) — 6th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The snake is sometimes called 'the little dragon' (小龙) — it shares the dragon's wisdom without its bombast. In Chinese culture it represents intuition, grace and transformation, shedding its skin to begin again. Snake-year people are considered deep thinkers, private and perceptive."
     },
     "Year of the Horse": {
-      "designer": "PBOC Design Team",
-      "represents": "Horse — 7th zodiac animal",
-      "edge": "RMB",
-      "note": "The horse, symbol of speed, perseverance and success. This coin closes the current zodiac cycle in 2026."
+      "designer": "",
+      "represents": "Horse (马) — 7th of the twelve zodiac animals",
+      "edge": "",
+      "note": "The horse means speed, freedom and tireless pursuit. The phrase 马到成功 (mǎ dào chéng gōng — 'success upon the horse's arrival') is one of the most common blessings in Chinese. Horse-year people are seen as energetic, independent and driven. This coin closes the current zodiac cycle in 2026."
     }
   }
 }

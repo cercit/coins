@@ -651,6 +651,22 @@ button { font-family: inherit; }
 }
 .coming-soon .mat.is-empty { opacity: .5; }
 
+.plaque .represents {
+  display: block;
+  font-size: .68rem;
+  letter-spacing: .04em;
+  color: var(--ex-rule);
+  margin-top: 2px;
+}
+.plaque .note {
+  display: block;
+  font-size: .7rem;
+  line-height: 1.45;
+  color: var(--ex-soft, var(--ink-dim));
+  margin-top: 6px;
+  font-style: italic;
+}
+
 /* --- the gallery entrance --- */
 .gallery-head { text-align: center; padding: 46px 0 34px; }
 .gallery-eyebrow {
