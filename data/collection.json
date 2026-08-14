@@ -1,6 +1,6 @@
 {
   "generatedFrom": "dhuryodhana_export (1).csv",
-  "totalCoins": 770,
+  "totalCoins": 769,
   "countryCount": 102,
   "issuerCount": 120,
   "missingImages": 0,
@@ -17233,7 +17233,7 @@
       "localFlag": null,
       "badge": null,
       "region": "Europe",
-      "count": 118,
+      "count": 117,
       "yearMin": 1865,
       "yearMax": 2021,
       "multiIssuer": true,
@@ -17251,7 +17251,7 @@
           "badge": null,
           "era": "1707–date",
           "note": "Royal Mint issues for the mainland — the sterling coinage struck for England, Scotland, Wales and Northern Ireland.",
-          "count": 107,
+          "count": 106,
           "yearMin": 1865,
           "yearMax": 2019,
           "currencies": [
@@ -17473,7 +17473,7 @@
               "label": "Elizabeth II",
               "house": "House of Windsor",
               "era": "1952-2022",
-              "count": 99,
+              "count": 98,
               "yearMin": 1955,
               "yearMax": 2019,
               "coins": [
@@ -18488,28 +18488,6 @@
                   "hasImage": true,
                   "front": "assets/coins/70552_front.webp",
                   "back": "assets/coins/70552_back.webp"
-                },
-                {
-                  "nNumber": "1389",
-                  "denomination": "1 Pound",
-                  "variant": "Elizabeth II (2nd portrait; Royal Arms)",
-                  "title": "1 Pound - Elizabeth II (2nd portrait; Royal Arms)",
-                  "year": "1983",
-                  "yearNum": 1983,
-                  "sortValue": 1,
-                  "currency": "Pound sterling (decimalized, 1971-date)",
-                  "type": "Circulating commemorative coins",
-                  "composition": "Nickel brass",
-                  "weight": "9.5",
-                  "diameter": "22.5",
-                  "thickness": "3.15",
-                  "shape": "Round",
-                  "grade": "",
-                  "reference": "KM# 933",
-                  "numistaUrl": "https://en.numista.com/1389",
-                  "hasImage": true,
-                  "front": "assets/coins/1389_front.webp",
-                  "back": "assets/coins/1389_back.webp"
                 },
                 {
                   "nNumber": "1389",
