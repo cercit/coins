@@ -659,6 +659,7 @@
           if (m.shape && c.shape !== m.shape) return;
           if (m.yearMax && !(c.yearNum <= m.yearMax)) return;
           if (m.yearMin && !(c.yearNum >= m.yearMin)) return;
+          if (m.variantPattern && !(c.variant && c.variant.indexOf(m.variantPattern) >= 0)) return;
           out.push(c);
         });
       });
@@ -669,7 +670,7 @@
   // "Elizabeth II (4th portrait; Welsh Dragon)" -> portrait + design
   function splitVariant(variant) {
     var m = /\(([^;()]+);\s*([^)]+)\)/.exec(variant || '');
-    return m ? { portrait: m[1].trim(), design: m[2].trim() } : { portrait: '', design: '' };
+    return m ? { portrait: m[1].trim(), design: m[2].trim() } : { portrait: '', design: (variant || '').trim() };
   }
 
   // A design re-cut by a later artist gets a "Design|Year" override.
@@ -681,6 +682,19 @@
   // past a foyer, room title-cards, and walls of framed coins, to an exit.
   function renderSeries(ex, series) {
     var coins = seriesCoins(series);
+    if (series.comingSoon) {
+      series.comingSoon.forEach(function (cs) {
+        coins.push({
+          _comingSoon: true, variant: cs.variant, year: cs.year,
+          yearNum: cs.yearNum || parseInt(cs.year, 10),
+          denomination: cs.denomination || (series.match && series.match.denomination) || '',
+          shape: (series.match && series.match.shape) || 'Round',
+          hasImage: false, front: '', back: ''
+        });
+      });
+      coins.sort(function (a, b) { return (a.yearNum || 0) - (b.yearNum || 0); });
+    }
+    var realCount = coins.filter(function (c) { return !c._comingSoon; }).length;
     var eras = groupPortraits(ex, coins);
 
     var html = crumbs([{ label: 'All countries', href: '#/' }, { label: 'Exhibition', href: '#/x' }, { label: series.name }]);
@@ -695,7 +709,7 @@
       '<p class="foyer-dates">' + esc(series.years || series.subtitle) + '</p>' +
       (series.intro ? '<div class="foyer-intro">' + series.intro.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' : '') +
       '<ul class="foyer-facts">' +
-        '<li><b>' + coins.length + '</b><span>objects</span></li>' +
+        '<li><b>' + realCount + '</b><span>objects</span></li>' +
         '<li><b>' + countDesigns(ex, coins) + '</b><span>designs</span></li>' +
         '<li><b>' + countDesigners(ex, coins) + '</b><span>designers</span></li>' +
       '</ul>' +
@@ -830,6 +844,16 @@
   // below it. Clicking the frame turns the coin to its reverse. The plaque is
   // brief, the way a museum label is — the fuller catalogue stays a click away.
   function framedCoin(ex, series, c) {
+    if (c._comingSoon) {
+      var csv = splitVariant(c.variant);
+      return '<figure class="framed coming-soon">' +
+        '<div class="frame no-flip"><div class="mat is-empty"><svg class="coin-ghost" viewBox="0 0 100 100" aria-hidden="true">' + SHAPE_ICON[shapeKey(c.shape)] + '</svg></div></div>' +
+        '<figcaption class="plaque">' +
+          '<h3>' + esc(csv.design || c.denomination) + '</h3>' +
+          '<span class="yr">' + esc(c.year) + ' · ' + esc(c.denomination) + '</span>' +
+          '<span class="by coming-soon-tag">Coming soon</span>' +
+        '</figcaption></figure>';
+    }
     var v = splitVariant(c.variant);
     var d = designInfo(ex, v.design, c.yearNum) || {};
     var label = (v.design || c.denomination) + ', ' + c.year;

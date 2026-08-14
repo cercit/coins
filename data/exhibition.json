@@ -22,6 +22,38 @@
         "It is one of the few modern coins a collector completes by design rather than by date. Each is shown beside the artist who cut it, the nation it stands for, and the motto milled on its edge."
       ],
       "closing": "The round pound was demonetised in October 2017, replaced by the twelve-sided bimetallic pound. Coins of that new type are held in this collection but are not part of this exhibition."
+    },
+    {
+      "slug": "china-lunar",
+      "name": "The Zodiac Cycle",
+      "subtitle": "People's Republic of China, 2015–2026",
+      "countrySlug": "cn",
+      "iso2": "cn",
+      "theme": "china",
+      "years": "2015 – 2026",
+      "lede": "Twelve animals, twelve years. China's bimetallic lunar commemorative series circles the full zodiac — one coin for each new year.",
+      "match": {
+        "countrySlug": "cn",
+        "issuerSlug": "china-peoples-republic-of",
+        "denomination": "10 Yuan",
+        "shape": "Round",
+        "yearMin": 2015,
+        "yearMax": 2026,
+        "variantPattern": "Year of the"
+      },
+      "comingSoon": [
+        {
+          "variant": "Year of the Goat",
+          "year": "2015",
+          "yearNum": 2015,
+          "denomination": "10 Yuan"
+        }
+      ],
+      "intro": [
+        "Each Lunar New Year, the People's Bank of China issues a bimetallic 10 yuan coin carrying that year's zodiac animal. The series opened with the Goat in 2015 and will close a full twelve-year cycle with the Horse in 2026.",
+        "The obverse stays constant — the national emblem of the People's Republic — while the reverse changes every year. Each animal is rendered in a style that sits between traditional paper-cutting and the modern mint: detailed enough to hold in the hand, simple enough to read at a glance."
+      ],
+      "closing": "The Horse in 2026 closes the first zodiac cycle. Whether the PBOC will strike a second round remains to be seen."
     }
   ],
   "portraits": {
@@ -29,7 +61,7 @@
       "label": "Second portrait",
       "designer": "Arnold Machin",
       "years": "1983–1984",
-      "note": "The Queen wearing the ‘Girls of Great Britain and Ireland’ tiara."
+      "note": "The Queen wearing the 'Girls of Great Britain and Ireland' tiara."
     },
     "3rd portrait": {
       "label": "Third portrait",
@@ -48,17 +80,24 @@
       "designer": "Jody Clark",
       "years": "2015–2016",
       "note": "The final circulating portrait of Elizabeth II, signed JC."
+    },
+    "Portrait": {
+      "label": "National Emblem",
+      "designer": "",
+      "years": "2015–2026",
+      "note": "Every coin in this series carries the national emblem of the People's Republic of China on its obverse — five stars above Tiananmen Gate, framed by ears of grain and a cogwheel."
     }
   },
   "edges": {
-    "DECUS ET TUTAMEN": "‘An ornament and a safeguard’ — a motto for milled edges, which were cut to make clipping detectable.",
-    "NEMO ME IMPUNE LACESSIT": "‘No one provokes me with impunity’ — the motto of the Order of the Thistle, for Scotland.",
-    "PLEIDIOL WYF I'M GWLAD": "‘True am I to my country’ — from the Welsh national anthem.",
-    "DOMINE DIRIGE NOS": "‘Lord, guide us’ — the motto of the City of London.",
-    "PRO TANTO QUID RETRIBUAMUS": "‘What shall we give in return for so much’ — the motto of Belfast.",
-    "NISI DOMINUS FRUSTRA": "‘Without the Lord, all is in vain’ — the motto of Edinburgh.",
-    "Y DDRAIG GOCH DDYRY CYCHWYN": "‘The red dragon will show the way’ — the motto of Cardiff.",
-    "Decorative pattern": "The bridge series carried a decorative milled pattern in place of a motto."
+    "DECUS ET TUTAMEN": "'An ornament and a safeguard' — a motto for milled edges, which were cut to make clipping detectable.",
+    "NEMO ME IMPUNE LACESSIT": "'No one provokes me with impunity' — the motto of the Order of the Thistle, for Scotland.",
+    "PLEIDIOL WYF I'M GWLAD": "'True am I to my country' — from the Welsh national anthem.",
+    "DOMINE DIRIGE NOS": "'Lord, guide us' — the motto of the City of London.",
+    "PRO TANTO QUID RETRIBUAMUS": "'What shall we give in return for so much' — the motto of Belfast.",
+    "NISI DOMINUS FRUSTRA": "'Without the Lord, all is in vain' — the motto of Edinburgh.",
+    "Y DDRAIG GOCH DDYRY CYCHWYN": "'The red dragon will show the way' — the motto of Cardiff.",
+    "Decorative pattern": "The bridge series carried a decorative milled pattern in place of a motto.",
+    "RMB": "The milled edge carries the denomination 'RMB 10 YUAN' in incuse lettering."
   },
   "designs": {
     "Royal Arms": {
@@ -204,6 +243,78 @@
       "represents": "Scotland",
       "edge": "NEMO ME IMPUNE LACESSIT",
       "note": "The thistle and bluebell of Scotland, crowned."
+    },
+    "Year of the Goat": {
+      "designer": "PBOC Design Team",
+      "represents": "Goat — 8th zodiac animal",
+      "edge": "RMB",
+      "note": "The goat, symbol of gentleness and peace in Chinese culture. This coin opened the current zodiac cycle."
+    },
+    "Year of the Monkey": {
+      "designer": "PBOC Design Team",
+      "represents": "Monkey — 9th zodiac animal",
+      "edge": "RMB",
+      "note": "The monkey, associated with cleverness and agility. In Chinese folklore, the Monkey King Sun Wukong is one of the best-known characters."
+    },
+    "Year of the Rooster": {
+      "designer": "PBOC Design Team",
+      "represents": "Rooster — 10th zodiac animal",
+      "edge": "RMB",
+      "note": "The rooster, symbol of punctuality and fidelity. Its crow at dawn traditionally marks the boundary between night and day."
+    },
+    "Year of the Dog": {
+      "designer": "PBOC Design Team",
+      "represents": "Dog — 11th zodiac animal",
+      "edge": "RMB",
+      "note": "The dog, representing loyalty and honesty in the Chinese zodiac."
+    },
+    "Year of the Pig": {
+      "designer": "PBOC Design Team",
+      "represents": "Pig — 12th zodiac animal",
+      "edge": "RMB",
+      "note": "The pig closes the twelve-year zodiac cycle. It stands for wealth and good fortune."
+    },
+    "Year of the Rat": {
+      "designer": "PBOC Design Team",
+      "represents": "Rat — 1st zodiac animal",
+      "edge": "RMB",
+      "note": "The rat opens a new twelve-year cycle. In Chinese culture it represents resourcefulness and quick thinking."
+    },
+    "Year of the Ox": {
+      "designer": "PBOC Design Team",
+      "represents": "Ox — 2nd zodiac animal",
+      "edge": "RMB",
+      "note": "The ox, a symbol of diligence and determination. Traditionally associated with agriculture and hard work."
+    },
+    "Year of the Tiger": {
+      "designer": "PBOC Design Team",
+      "represents": "Tiger — 3rd zodiac animal",
+      "edge": "RMB",
+      "note": "The tiger, king of the beasts in Chinese tradition. It stands for courage and strength."
+    },
+    "Year of the Rabbit": {
+      "designer": "PBOC Design Team",
+      "represents": "Rabbit — 4th zodiac animal",
+      "edge": "RMB",
+      "note": "The rabbit, linked to the Moon in Chinese myth through the Jade Rabbit who pounds the elixir of immortality."
+    },
+    "Year of the Dragon": {
+      "designer": "PBOC Design Team",
+      "represents": "Dragon — 5th zodiac animal",
+      "edge": "RMB",
+      "note": "The dragon, the most revered creature in Chinese culture. Unlike Western dragons, the Chinese dragon is a benevolent symbol of power, strength and good luck."
+    },
+    "Year of the Snake": {
+      "designer": "PBOC Design Team",
+      "represents": "Snake — 6th zodiac animal",
+      "edge": "RMB",
+      "note": "The snake, associated with wisdom and mystery. It is sometimes called the 'little dragon' in Chinese tradition."
+    },
+    "Year of the Horse": {
+      "designer": "PBOC Design Team",
+      "represents": "Horse — 7th zodiac animal",
+      "edge": "RMB",
+      "note": "The horse, symbol of speed, perseverance and success. This coin closes the current zodiac cycle in 2026."
     }
   }
 }

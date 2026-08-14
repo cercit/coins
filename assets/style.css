@@ -592,6 +592,65 @@ button { font-family: inherit; }
   }
 }
 
+/* China — lantern-red walls and gilt frames, each zodiac animal
+   under a warm spot. A celebration theme for the lunar series. */
+[data-series-theme="china"] {
+  --ex-plate:
+    radial-gradient(1100px 380px at 50% -12%, rgba(220,60,30,.15), transparent 72%),
+    linear-gradient(168deg, #2a0a08 0%, #1c0604 58%, #0f0302 100%);
+  --ex-vitrine:
+    radial-gradient(ellipse 70% 60% at 50% 22%, rgba(200,80,40,.14), transparent 72%),
+    linear-gradient(180deg, #200806 0%, #120302 100%);
+  --ex-sheen: rgba(255,210,130,.12);
+  --ex-border: #5a2a1a;
+  --ex-dim: #c9a086;
+  --ex-ink: #faf0e4;
+  --ex-soft: #d4b8a0;
+  --ex-glow: rgba(255,200,100,.22);
+  --ex-rule: #c9a15a;
+  --ex-ribbon: linear-gradient(90deg, #c8102e 0 40%, #ffd700 40% 60%, #c8102e 60% 100%);
+  --ex-label-accent: #8c1c1c;
+}
+:root[data-theme="light"] [data-series-theme="china"] {
+  --ex-plate:
+    radial-gradient(1100px 380px at 50% -12%, rgba(200,16,46,.08), transparent 72%),
+    linear-gradient(168deg, #f7e9e6, #eed8d3);
+  --ex-vitrine:
+    radial-gradient(ellipse 70% 60% at 50% 22%, rgba(255,255,255,.85), transparent 72%),
+    linear-gradient(180deg, #f2ddd8, #e8cec8);
+  --ex-sheen: rgba(255,255,255,.7);
+  --ex-border: #d4a8a0;
+  --ex-dim: #7a3a2e;
+  --ex-ink: #2a0a06;
+  --ex-soft: #5a2218;
+  --ex-glow: rgba(255,255,255,.9);
+  --ex-rule: #8a4a1f;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) [data-series-theme="china"] {
+    --ex-plate:
+      radial-gradient(1100px 380px at 50% -12%, rgba(200,16,46,.08), transparent 72%),
+      linear-gradient(168deg, #f7e9e6, #eed8d3);
+    --ex-vitrine:
+      radial-gradient(ellipse 70% 60% at 50% 22%, rgba(255,255,255,.85), transparent 72%),
+      linear-gradient(180deg, #f2ddd8, #e8cec8);
+    --ex-sheen: rgba(255,255,255,.7);
+    --ex-border: #d4a8a0;
+    --ex-dim: #7a3a2e;
+    --ex-ink: #2a0a06;
+    --ex-soft: #5a2218;
+    --ex-glow: rgba(255,255,255,.9);
+    --ex-rule: #8a4a1f;
+  }
+}
+
+.coming-soon .plaque .coming-soon-tag {
+  color: var(--ex-rule);
+  font-style: italic;
+  letter-spacing: .06em;
+}
+.coming-soon .mat.is-empty { opacity: .5; }
+
 /* --- the gallery entrance --- */
 .gallery-head { text-align: center; padding: 46px 0 34px; }
 .gallery-eyebrow {

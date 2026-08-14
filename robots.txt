@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cercit.github.io/coins/sitemap.xml
