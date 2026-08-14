@@ -56,6 +56,29 @@
         "The obverse stays constant — the national emblem of the People's Republic — while the reverse changes every year. Each animal is rendered in a style that sits between traditional paper-cutting and the modern mint: detailed enough to hold in the hand, simple enough to read at a glance."
       ],
       "closing": "The Horse in 2026 closes the first zodiac cycle. Whether the PBOC will strike a second round remains to be seen."
+    },
+    {
+      "slug": "china-mountains",
+      "name": "The Sacred Mountains",
+      "subtitle": "People's Republic of China, 2019–2022",
+      "countrySlug": "cn",
+      "iso2": "cn",
+      "theme": "china",
+      "years": "2019 – 2022",
+      "lede": "Four UNESCO World Heritage mountains on four brass coins — each struck on a distinctive square blank, the only non-round coins in this collection.",
+      "match": {
+        "countrySlug": "cn",
+        "issuerSlug": "china-peoples-republic-of",
+        "denomination": "5 Yuan",
+        "shape": "Square with rounded corners"
+      },
+      "skipPortraits": true,
+      "compactPlaque": true,
+      "intro": [
+        "Between 2019 and 2022, the People's Bank of China issued a series of 5 yuan coins honouring the country's most sacred mountains — all of them UNESCO World Heritage Sites. Each is struck on a square blank with rounded corners, a shape unlike anything else in the Chinese circulating series.",
+        "Mountains hold a particular place in Chinese culture. They're not just landscape — they're where heaven and earth meet, where emperors performed rites, where monks built temples, and where painters went to understand the world."
+      ],
+      "closing": "Four mountains, four corners. China has designated many more peaks as heritage sites, so this series may well continue."
     }
   ],
   "portraits": {
@@ -245,6 +268,30 @@
       "represents": "Scotland",
       "edge": "NEMO ME IMPUNE LACESSIT",
       "note": "The thistle and bluebell of Scotland, crowned."
+    },
+    "Mount Taishan": {
+      "designer": "",
+      "represents": "泰山 — Shandong province, UNESCO since 1987",
+      "edge": "",
+      "note": "Taishan is the most revered of the Five Great Mountains (五岳) and the one most closely tied to Chinese imperial power. For over two thousand years, emperors climbed its 6,660 steps to perform the Feng and Shan sacrifices — rituals that announced their mandate from heaven. Confucius stood at its summit and said the world looked small. It was the first Chinese site inscribed by UNESCO as both a natural and cultural landmark."
+    },
+    "Mount Wuyi": {
+      "designer": "",
+      "represents": "武夷山 — Fujian province, UNESCO since 1999",
+      "edge": "",
+      "note": "Wuyi is where landscape and cultivation meet. Its Nine Bend River cuts through sheer red sandstone cliffs draped in subtropical forest — one of the most biodiverse zones in southeastern China. It's also the birthplace of oolong tea and the home of Da Hong Pao, the most expensive tea on earth. The mountain's 36 peaks shelter ancient Taoist temples and the earliest known Neo-Confucian academy."
+    },
+    "Mount Emei and Leshan Giant Buddha": {
+      "designer": "",
+      "represents": "峨眉山 & 乐山大佛 — Sichuan province, UNESCO since 1996",
+      "edge": "",
+      "note": "Mount Emei is one of the Four Sacred Buddhist Mountains of China, where Samantabhadra (Puxian) Bodhisattva is said to reside. At its foot, the Leshan Giant Buddha sits carved into the cliff face — 71 metres tall, begun in 713 AD and finished ninety years later. It remains the largest stone Buddha ever carved. Monks built it to calm the turbulent rivers below, and for thirteen centuries it has watched the confluence of three rivers."
+    },
+    "Mount Huangshan": {
+      "designer": "",
+      "represents": "黄山 — Anhui province, UNESCO since 1990",
+      "edge": "",
+      "note": "The Yellow Mountain gave Chinese landscape painting its vocabulary. Its granite peaks punch through a sea of clouds, twisted Huangshan pines cling to vertical rock faces, and hot springs steam at its base. The old saying goes: 'Having seen the Five Great Mountains, there is no need to see other mountains; having seen Huangshan, there is no need to see the Five Great Mountains.' It is the mountain against which all others are measured."
     },
     "Year of the Goat": {
       "designer": "",
