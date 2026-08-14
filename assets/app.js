@@ -862,6 +862,8 @@
     var v = splitVariant(c.variant);
     var d = designInfo(ex, v.design, c.yearNum) || {};
     var label = (v.design || c.denomination) + ', ' + c.year;
+    var sk = shapeKey(c.shape);
+    var shapeCls = sk !== 'round' ? ' shape-' + sk : '';
 
     // This is an exhibition of the reverse DESIGNS, and the plaque names them, so
     // the design faces out by default; the monarch's obverse is the side you turn to.
@@ -871,8 +873,8 @@
       : '<div class="mat is-empty"><svg class="coin-ghost" viewBox="0 0 100 100" aria-hidden="true">' + SHAPE_ICON[shapeKey(c.shape)] + '</svg></div>';
 
     var frame = c.hasImage
-      ? '<div class="frame" tabindex="0" role="button" aria-label="Turn ' + esc(label) + ' to see the portrait">' + mat + '<span class="turn-hint">turn ↻</span></div>'
-      : '<div class="frame no-flip">' + mat + '</div>';
+      ? '<div class="frame' + shapeCls + '" tabindex="0" role="button" aria-label="Turn ' + esc(label) + ' to see the portrait">' + mat + '<span class="turn-hint">turn ↻</span></div>'
+      : '<div class="frame no-flip' + shapeCls + '">' + mat + '</div>';
 
     return '<figure class="framed">' + frame +
       '<figcaption class="plaque">' +

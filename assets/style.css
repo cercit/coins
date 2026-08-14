@@ -982,6 +982,10 @@ button { font-family: inherit; }
 .mat.is-empty .coin-ghost { width: 44%; height: auto; fill: none; stroke: var(--ex-rule); stroke-width: 2.5; opacity: .4; }
 .turn-hint { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ex-dim); opacity: .7; pointer-events: none; }
 
+.frame.shape-square { border-radius: 14%; }
+.frame.shape-square .mat { border-radius: 12%; }
+.frame.shape-square .mat .face { border-radius: 8%; }
+
 /* plaque */
 .plaque {
   margin-top: 24px; width: min(290px, 64vw); text-align: center; padding: 13px 16px; border-radius: 5px;
