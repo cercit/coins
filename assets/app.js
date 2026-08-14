@@ -695,24 +695,33 @@
       coins.sort(function (a, b) { return (a.yearNum || 0) - (b.yearNum || 0); });
     }
     var realCount = coins.filter(function (c) { return !c._comingSoon; }).length;
+    // A finite set reads as a set when each piece says where it falls in it.
+    coins.forEach(function (c, i) { c._seq = i + 1; });
+    var total = coins.length;
     var eras = groupPortraits(ex, coins);
+    setSeriesMeta(series);
 
     var html = crumbs([{ label: 'All countries', href: '#/' }, { label: 'Exhibition', href: '#/x' }, { label: series.name }]);
     html += '<div class="exhibit gallery" data-series-theme="' + esc(series.theme || 'default') + '">' +
       '<div class="gallery-scroll" id="gscroll"><div class="gallery-pin"><div class="gallery-floor"></div>' +
       '<div class="gallery-track" id="gtrack">';
 
+    // "objects / designs / designers" suits a series collected by design. A
+    // series can name its own figures instead when those read truer.
+    var facts = (series.facts && series.facts.length)
+      ? series.facts.map(function (f) { return '<li><b>' + esc(f.value) + '</b><span>' + esc(f.label) + '</span></li>'; }).join('')
+      : '<li><b>' + realCount + '</b><span>objects</span></li>' +
+        '<li><b>' + countDesigns(ex, coins) + '</b><span>designs</span></li>' +
+        '<li><b>' + countDesigners(ex, coins) + '</b><span>designers</span></li>';
+
     // foyer — the entrance
     html += '<section class="panel foyer" aria-label="Entrance">' +
       '<p class="foyer-eyebrow">Exhibition · ' + esc(seriesCountryLabel(series)) + '</p>' +
       '<h1 class="foyer-title">' + esc(series.name) + '</h1>' +
-      '<p class="foyer-dates">' + esc(series.years || series.subtitle) + '</p>' +
+      '<p class="foyer-dates">' + esc(series.supporting || series.years || series.subtitle) + '</p>' +
+      (series.tagline ? '<p class="foyer-tagline">' + esc(series.tagline) + '</p>' : '') +
       (series.intro ? '<div class="foyer-intro">' + series.intro.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') + '</div>' : '') +
-      '<ul class="foyer-facts">' +
-        '<li><b>' + realCount + '</b><span>objects</span></li>' +
-        '<li><b>' + countDesigns(ex, coins) + '</b><span>designs</span></li>' +
-        '<li><b>' + countDesigners(ex, coins) + '</b><span>designers</span></li>' +
-      '</ul>' +
+      '<ul class="foyer-facts">' + facts + '</ul>' +
       '<p class="foyer-hint">Scroll to walk the gallery <span>→</span></p></section>';
 
     // Each portrait era opens with the monarch's obverse of that period, then
@@ -735,7 +744,7 @@
       chunk(era.coins, 2).forEach(function (pair) {
         wallNo++;
         html += '<section class="panel wall" aria-label="Wall ' + wallNo + '">' +
-          pair.map(function (c) { return framedCoin(ex, series, c); }).join('') + '</section>';
+          pair.map(function (c) { return framedCoin(ex, series, c, total); }).join('') + '</section>';
       });
     });
 
@@ -845,14 +854,35 @@
   // A single coin hung in the hall: spotlit in a gold frame, a printed plaque
   // below it. Clicking the frame turns the coin to its reverse. The plaque is
   // brief, the way a museum label is — the fuller catalogue stays a click away.
-  function framedCoin(ex, series, c) {
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+
+  // Where a coin sits in a finite set. Only series that are a set say so.
+  function seqMark(series, c, total) {
+    if (!series.numbered || !c._seq) return '';
+    return '<p class="coin-seq">' + pad2(c._seq) + '<i>/</i>' + pad2(total || c._seq) + '</p>';
+  }
+
+  // Place is the point of a landscape series, so it leads the label instead of
+  // sitting inside a sentence: Chinese name, then English, then province.
+  function placeLines(d) {
+    return (d.cn ? '<span class="cn">' + esc(d.cn) + '</span>' : '');
+  }
+  function placeMeta(d) {
+    return (d.place ? '<span class="place">' + esc(d.place) + '</span>' : '') +
+      (d.unesco ? '<span class="unesco">UNESCO World Heritage · ' + esc(d.unesco) + '</span>' : '');
+  }
+
+  function framedCoin(ex, series, c, total) {
+    var backName = (series.flip && series.flip.back) || 'the portrait';
     if (c._comingSoon) {
       var csv = splitVariant(c.variant);
       var csd = designInfo(ex, csv.design, c.yearNum) || {};
-      return '<figure class="framed coming-soon">' +
+      return '<figure class="framed coming-soon">' + seqMark(series, c, total) +
         '<div class="frame no-flip"><div class="mat is-empty"><svg class="coin-ghost" viewBox="0 0 100 100" aria-hidden="true">' + SHAPE_ICON[shapeKey(c.shape)] + '</svg></div></div>' +
         '<figcaption class="plaque">' +
+          placeLines(csd) +
           '<h3>' + esc(csv.design || c.denomination) + '</h3>' +
+          placeMeta(csd) +
           '<span class="yr">' + esc(c.year) + ' · ' + esc(c.denomination) + '</span>' +
           '<span class="by coming-soon-tag">Coming soon</span>' +
           (csd.represents ? '<span class="represents">' + esc(csd.represents) + '</span>' : '') +
@@ -872,13 +902,18 @@
         '<img class="face back" loading="lazy" src="' + c.front + '" alt="' + esc(label) + ', obverse portrait"></div>'
       : '<div class="mat is-empty"><svg class="coin-ghost" viewBox="0 0 100 100" aria-hidden="true">' + SHAPE_ICON[shapeKey(c.shape)] + '</svg></div>';
 
+    // "turn ↻" was too quiet to read as an invitation, and it never said what
+    // turning would show. Naming the other side makes the flip worth doing.
     var frame = c.hasImage
-      ? '<div class="frame' + shapeCls + '" tabindex="0" role="button" aria-label="Turn ' + esc(label) + ' to see the portrait">' + mat + '<span class="turn-hint">turn ↻</span></div>'
+      ? '<div class="frame' + shapeCls + '" tabindex="0" role="button" aria-label="Turn ' + esc(label) + ' to see the ' + esc(backName) + '">' + mat +
+        '<span class="turn-hint">↻ Turn to see the ' + esc(backName) + '</span></div>'
       : '<div class="frame no-flip' + shapeCls + '">' + mat + '</div>';
 
-    return '<figure class="framed">' + frame +
+    return '<figure class="framed">' + seqMark(series, c, total) + frame +
       '<figcaption class="plaque">' +
+        placeLines(d) +
         '<h3>' + esc(v.design || c.denomination) + '</h3>' +
+        placeMeta(d) +
         '<span class="yr">' + esc(c.year) + ' · ' + esc(c.denomination) + '</span>' +
         (d.represents ? '<span class="represents">' + esc(d.represents) + '</span>' : '') +
         (!series.compactPlaque && d.designer ? '<span class="by">Designed by ' + esc(d.designer) + '</span>' : '') +
@@ -886,6 +921,36 @@
         (d.note ? '<span class="note">' + esc(d.note) + '</span>' : '') +
         (c.numistaUrl ? '<a class="plaque-link" href="' + esc(c.numistaUrl) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Full record ↗</a>' : '') +
       '</figcaption></figure>';
+  }
+
+  // Each exhibition is its own shareable page, so it gets its own title card
+  // rather than inheriting the site-wide one.
+  function setSeriesMeta(series) {
+    var title = series.name + ' — World of Coins';
+    var desc = series.metaDescription || series.lede || '';
+    var url = location.href;
+    document.title = title;
+    setMetaTag('name', 'description', desc);
+    setMetaTag('property', 'og:title', title);
+    setMetaTag('property', 'og:description', desc);
+    setMetaTag('property', 'og:url', url);
+    setMetaTag('property', 'og:type', 'article');
+    setMetaTag('name', 'twitter:title', title);
+    setMetaTag('name', 'twitter:description', desc);
+    setLink('canonical', url);
+  }
+
+  function setMetaTag(attr, key, value) {
+    if (!value) return;
+    var el = document.head.querySelector('meta[' + attr + '="' + key + '"]');
+    if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); }
+    el.setAttribute('content', value);
+  }
+
+  function setLink(rel, href) {
+    var el = document.head.querySelector('link[rel="' + rel + '"]');
+    if (!el) { el = document.createElement('link'); el.setAttribute('rel', rel); document.head.appendChild(el); }
+    el.setAttribute('href', href);
   }
 
   function seriesCountryLabel(series) {

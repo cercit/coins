@@ -25,13 +25,23 @@
     },
     {
       "slug": "china-lunar",
-      "name": "The Zodiac Cycle",
+      "name": "China Lunar Zodiac Coins",
+      "supporting": "The Zodiac Cycle · 2015–2026",
+      "tagline": "Twelve years. Twelve animals. One complete lunar cycle.",
       "subtitle": "People's Republic of China, 2015–2026",
       "countrySlug": "cn",
       "iso2": "cn",
       "theme": "china",
       "years": "2015 – 2026",
       "lede": "Twelve animals, twelve years. China's bimetallic lunar commemorative series circles the full zodiac — one coin for each new year.",
+      "metaDescription": "Twelve Chinese 10 yuan bimetallic commemorative coins, one zodiac animal per year, 2015–2026.",
+      "facts": [
+        { "value": "12", "label": "Years" },
+        { "value": "12", "label": "Zodiac animals" },
+        { "value": "10 Yuan", "label": "Denomination" },
+        { "value": "2015–2026", "label": "Series" }
+      ],
+      "flip": { "front": "zodiac animal", "back": "national emblem" },
       "match": {
         "countrySlug": "cn",
         "issuerSlug": "china-peoples-republic-of",
@@ -59,13 +69,24 @@
     },
     {
       "slug": "china-mountains",
-      "name": "The Sacred Mountains",
+      "name": "China's Sacred Mountains",
+      "supporting": "Four 5 Yuan commemorative coins · 2019–2022",
+      "tagline": "Four landscapes. Four UNESCO heritage stories. One extraordinary coin series.",
       "subtitle": "People's Republic of China, 2019–2022",
       "countrySlug": "cn",
       "iso2": "cn",
       "theme": "china",
       "years": "2019 – 2022",
       "lede": "Four UNESCO World Heritage mountains on four brass coins — each struck on a distinctive square blank, the only non-round coins in this collection.",
+      "metaDescription": "Four Chinese 5 Yuan commemorative coins celebrating UNESCO heritage landscapes, 2019–2022.",
+      "numbered": true,
+      "facts": [
+        { "value": "4", "label": "Mountains" },
+        { "value": "4", "label": "UNESCO sites" },
+        { "value": "5 Yuan", "label": "Denomination" },
+        { "value": "2019–2022", "label": "Series" }
+      ],
+      "flip": { "front": "mountain landscape", "back": "national emblem" },
       "match": {
         "countrySlug": "cn",
         "issuerSlug": "china-peoples-republic-of",
@@ -271,99 +292,107 @@
     },
     "Mount Taishan": {
       "designer": "",
-      "represents": "泰山 — Shandong province, UNESCO since 1987",
+      "cn": "泰山",
+      "place": "Shandong Province",
+      "unesco": "1987",
       "edge": "",
-      "note": "Most revered of the Five Great Mountains (五岳). For two thousand years, emperors climbed its 6,660 steps to perform the Feng and Shan sacrifices, announcing their mandate from heaven. Confucius stood at the summit and said the world looked small. First Chinese site inscribed by UNESCO as both natural and cultural."
+      "note": "Most revered of the Five Great Mountains. For two thousand years emperors climbed its 6,660 steps to claim their mandate from heaven, and Confucius stood at the summit and said the world looked small."
     },
     "Mount Wuyi": {
       "designer": "",
-      "represents": "武夷山 — Fujian province, UNESCO since 1999",
+      "cn": "武夷山",
+      "place": "Fujian Province",
+      "unesco": "1999",
       "edge": "",
-      "note": "The Nine Bend River cuts through red sandstone cliffs draped in subtropical forest. Wuyi is the birthplace of oolong tea and home to Da Hong Pao, the most expensive tea on earth. Its 36 peaks shelter Taoist temples and the earliest known Neo-Confucian academy."
+      "note": "Red sandstone cliffs above the Nine Bend River, and the birthplace of oolong tea. Its slopes grow Da Hong Pao, the most expensive tea on earth."
     },
     "Mount Emei and Leshan Giant Buddha": {
       "designer": "",
-      "represents": "峨眉山 & 乐山大佛 — Sichuan province, UNESCO since 1996",
+      "cn": "峨眉山 · 乐山大佛",
+      "place": "Sichuan Province",
+      "unesco": "1996",
       "edge": "",
-      "note": "One of China's Four Sacred Buddhist Mountains, where Samantabhadra Bodhisattva is said to reside. At its foot sits the Leshan Giant Buddha, carved into the cliff starting in 713 AD. At 71 metres, it remains the largest stone Buddha ever made. Monks built it to calm the rivers below."
+      "note": "One of the Four Sacred Buddhist Mountains. At its foot the Leshan Giant Buddha, begun in 713 AD and 71 metres tall, is the largest stone Buddha ever carved."
     },
     "Mount Huangshan": {
       "designer": "",
-      "represents": "黄山 — Anhui province, UNESCO since 1990",
+      "cn": "黄山",
+      "place": "Anhui Province",
+      "unesco": "1990",
       "edge": "",
-      "note": "The Yellow Mountain gave Chinese landscape painting its vocabulary. Granite peaks rise through clouds, twisted pines cling to vertical rock faces, and hot springs steam at the base. The old saying: 'Having seen the Five Great Mountains, there is no need to see other mountains; having seen Huangshan, there is no need to see the Five Great Mountains.'"
+      "note": "The mountain that gave Chinese landscape painting its vocabulary — granite peaks through a sea of cloud, pines rooted in bare rock. Seeing it, the old saying goes, spares you every other mountain."
     },
     "Year of the Goat": {
       "designer": "",
       "represents": "Goat (羊) — 8th of the twelve zodiac animals",
       "edge": "",
-      "note": "The goat stands for gentleness, peace and filial piety. In Chinese, the character 羊 (yáng) appears inside 美 (beauty) and 善 (goodness) — the animal is woven into the language itself. People born in goat years are thought to be calm, creative and compassionate. This coin opened the current zodiac cycle in 2015."
+      "note": "Gentleness, peace and filial piety. The character 羊 sits inside both 美 (beauty) and 善 (goodness) — the animal is built into the language itself."
     },
     "Year of the Monkey": {
       "designer": "",
       "represents": "Monkey (猴) — 9th of the twelve zodiac animals",
       "edge": "",
-      "note": "The monkey is cleverness made physical — quick, curious, hard to pin down. The most famous monkey in Chinese literature is Sun Wukong, the Monkey King of Journey to the West, who outwitted gods and demons alike. People born in monkey years are said to be sharp, inventive and restless."
+      "note": "Cleverness made physical. Sun Wukong, the Monkey King of Journey to the West, outwitted gods and demons alike."
     },
     "Year of the Rooster": {
       "designer": "",
       "represents": "Rooster (鸡) — 10th of the twelve zodiac animals",
       "edge": "",
-      "note": "The rooster's crow splits night from day. In Chinese culture it signals punctuality, honesty and moral courage — the bird that never fails to announce the dawn. Rooster-year people are considered observant, hardworking and outspoken."
+      "note": "The crow that splits night from day. It stands for punctuality, honesty and the courage to speak first."
     },
     "Year of the Dog": {
       "designer": "",
       "represents": "Dog (狗) — 11th of the twelve zodiac animals",
       "edge": "",
-      "note": "The dog is loyalty given form. In Chinese tradition it guards the home and its people without question. Dog-year people are seen as faithful, honest and protective — the friend who shows up when it matters."
+      "note": "Loyalty given form. In Chinese tradition the dog guards the household without question — the friend who shows up."
     },
     "Year of the Pig": {
       "designer": "",
       "represents": "Pig (猪) — 12th of the twelve zodiac animals",
       "edge": "",
-      "note": "The pig closes each twelve-year cycle. Far from the Western caricature, the Chinese pig stands for wealth, good fortune and a generous spirit. In rural China, a fat pig was the clearest sign of a prosperous household. Pig-year people are thought to be warm, tolerant and lucky in money."
+      "note": "Wealth and good fortune, not gluttony. In rural China a fat pig was the clearest sign of a prosperous house."
     },
     "Year of the Rat": {
       "designer": "",
       "represents": "Rat (鼠) — 1st of the twelve zodiac animals",
       "edge": "",
-      "note": "The rat leads the zodiac. Legend says it won first place by riding the ox's back and leaping ahead at the finish line — resourcefulness over brute strength. Rat-year people are considered quick-witted, adaptable and opportunistic in the best sense."
+      "note": "First in the zodiac. It won the race by riding the ox's back and leaping ahead at the line — wit over strength."
     },
     "Year of the Ox": {
       "designer": "",
       "represents": "Ox (牛) — 2nd of the twelve zodiac animals",
       "edge": "",
-      "note": "The ox is the backbone of traditional Chinese agriculture — patient, powerful, uncomplaining. It finished second in the zodiac race because it carried the rat without complaint. Ox-year people are seen as dependable, determined and quietly strong."
+      "note": "The backbone of Chinese farming: patient, powerful, uncomplaining. It placed second for carrying the rat the whole way."
     },
     "Year of the Tiger": {
       "designer": "",
       "represents": "Tiger (虎) — 3rd of the twelve zodiac animals",
       "edge": "",
-      "note": "The tiger is king of all beasts in Chinese tradition, not the lion. It represents courage, authority and the power to ward off evil — the character 王 (king) is said to be visible in the stripes on its forehead. Tiger-year people are considered brave, competitive and confident."
+      "note": "King of the beasts in China, not the lion. The character 王 (king) is said to be readable in the stripes on its brow."
     },
     "Year of the Rabbit": {
       "designer": "",
       "represents": "Rabbit (兔) — 4th of the twelve zodiac animals",
       "edge": "",
-      "note": "The rabbit is tied to the Moon through the legend of the Jade Rabbit (玉兔), who lives on the lunar surface pounding the elixir of immortality. It stands for elegance, mercy and long life. Rabbit-year people are thought to be gentle, diplomatic and quietly ambitious."
+      "note": "Tied to the moon by the Jade Rabbit (玉兔), who pounds the elixir of immortality there. Grace, mercy and long life."
     },
     "Year of the Dragon": {
       "designer": "",
       "represents": "Dragon (龙) — 5th of the twelve zodiac animals",
       "edge": "",
-      "note": "The dragon is the only mythical creature in the zodiac and the most revered. Unlike the fire-breathing menace of Western myth, the Chinese dragon (龙, lóng) is a benevolent force — bringer of rain, guardian of waterways, symbol of imperial authority. Dragon years see a spike in birth rates across East Asia. Dragon-year people are considered ambitious, fearless and destined for greatness."
+      "note": "The only mythical animal in the zodiac, and a benevolent one — bringer of rain, symbol of imperial power. Birth rates across East Asia spike in dragon years."
     },
     "Year of the Snake": {
       "designer": "",
       "represents": "Snake (蛇) — 6th of the twelve zodiac animals",
       "edge": "",
-      "note": "The snake is sometimes called 'the little dragon' (小龙) — it shares the dragon's wisdom without its bombast. In Chinese culture it represents intuition, grace and transformation, shedding its skin to begin again. Snake-year people are considered deep thinkers, private and perceptive."
+      "note": "Called the little dragon (小龙) — the same wisdom without the bombast. It sheds its skin and begins again."
     },
     "Year of the Horse": {
       "designer": "",
       "represents": "Horse (马) — 7th of the twelve zodiac animals",
       "edge": "",
-      "note": "The horse means speed, freedom and tireless pursuit. The phrase 马到成功 (mǎ dào chéng gōng — 'success upon the horse's arrival') is one of the most common blessings in Chinese. Horse-year people are seen as energetic, independent and driven. This coin closes the current zodiac cycle in 2026."
+      "note": "Speed and freedom. 马到成功 — 'success upon the horse's arrival' — is among the most common blessings in Chinese."
     }
   }
 }

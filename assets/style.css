@@ -658,11 +658,13 @@ button { font-family: inherit; }
   color: var(--ex-rule);
   margin-top: 2px;
 }
+/* The note sits on a cream label, so it takes a dark ink rather than the
+   gallery's soft-on-dark colour, which washed out to near-illegible here. */
 .plaque .note {
   display: block;
-  font-size: .7rem;
-  line-height: 1.45;
-  color: var(--ex-soft, var(--ink-dim));
+  font-size: .64rem;
+  line-height: 1.4;
+  color: #5f5647;
   margin-top: 6px;
   font-style: italic;
 }
@@ -922,6 +924,7 @@ button { font-family: inherit; }
 .foyer-eyebrow { font-size: .64rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ex-rule); }
 .foyer-title { font-family: var(--serif); font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 600; line-height: 1.02; margin: 12px 0 0; color: var(--ex-ink); }
 .foyer-dates { font-family: var(--serif); font-style: italic; font-size: 1.15rem; color: var(--ex-rule); margin-top: 8px; }
+.foyer-tagline { margin: 14px auto 0; max-width: 34ch; font-size: 1rem; line-height: 1.5; color: var(--ex-ink); opacity: .9; }
 .foyer-intro { margin: 22px auto 0; max-width: 52ch; text-align: left; }
 .foyer-intro p { margin: 0; color: var(--ex-soft); font-size: .95rem; line-height: 1.7; }
 .foyer-intro p + p { margin-top: 10px; }
@@ -980,19 +983,40 @@ button { font-family: inherit; }
 .mat .face.back { transform: rotateY(180deg); }
 .mat.is-empty { display: flex; align-items: center; justify-content: center; }
 .mat.is-empty .coin-ghost { width: 44%; height: auto; fill: none; stroke: var(--ex-rule); stroke-width: 2.5; opacity: .4; }
-.turn-hint { position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ex-dim); opacity: .7; pointer-events: none; }
+/* The hint sits below the frame rather than on the coin: it now names the side
+   you would be turning to, which is too long to float over the design. */
+.turn-hint {
+  position: absolute; bottom: -21px; left: 50%; transform: translateX(-50%);
+  font-size: .6rem; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--ex-rule); opacity: .8; pointer-events: none; white-space: nowrap;
+  transition: opacity .2s;
+}
+.frame:hover .turn-hint, .frame:focus-visible .turn-hint { opacity: 1; }
 
-.frame.shape-square { border-radius: 6%; }
-.frame.shape-square .mat { border-radius: 4%; }
-.frame.shape-square .mat .face { border-radius: 3%; }
+/* 01 / 04 — a set announces its own size. */
+.coin-seq { margin: 0 0 15px; font-family: var(--serif); font-size: .82rem; letter-spacing: .2em; color: var(--ex-rule); opacity: .85; }
+.coin-seq i { font-style: normal; opacity: .4; margin: 0 5px; }
+
+/* Square coins get a square frame, and they fill it — the recessed mat that
+   suits a round coin just reads as a box behind a square one. */
+.frame.shape-square { border-radius: 7%; padding: 8px; }
+.frame.shape-square .mat { border-radius: 5%; background: none; box-shadow: none; }
+.frame.shape-square .mat .face { inset: 2%; width: 96%; height: 96%; border-radius: 4%; }
 
 /* plaque */
+/* A museum label is small and dense on purpose — it should not compete with
+   the object above it. */
 .plaque {
-  margin-top: 24px; width: min(290px, 64vw); text-align: center; padding: 13px 16px; border-radius: 5px;
+  margin-top: 34px; width: min(246px, 60vw); text-align: center; padding: 11px 13px; border-radius: 5px;
   background: var(--ex-label); border: 1px solid var(--ex-label-edge); box-shadow: 0 10px 22px rgba(0,0,0,.4); color: #2a2418;
 }
-.plaque h3 { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; line-height: 1.1; color: #231f18; }
-.plaque .yr { display: block; margin-top: 2px; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: #8c1c2b; }
+.plaque h3 { font-family: var(--serif); font-size: .98rem; font-weight: 600; line-height: 1.15; color: #231f18; }
+/* For a series about places, the place leads: the Chinese name sits above the
+   English one, and province and heritage status get their own lines. */
+.plaque .cn { display: block; font-family: var(--serif); font-size: 1.1rem; line-height: 1.1; color: #8c1c2b; margin-bottom: 1px; }
+.plaque .place { display: block; margin-top: 4px; font-size: .64rem; font-weight: 600; letter-spacing: .04em; color: #4a4235; }
+.plaque .unesco { display: block; margin-top: 1px; font-size: .55rem; letter-spacing: .08em; text-transform: uppercase; color: #7a6a45; }
+.plaque .yr { display: block; margin-top: 5px; font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; color: #8c1c2b; }
 .plaque .by { display: block; margin-top: 7px; font-size: .78rem; font-style: italic; color: #5a5142; }
 .plaque .meta { display: block; margin-top: 6px; font-size: .68rem; color: #6a614f; line-height: 1.4; }
 .plaque-link { display: inline-block; margin-top: 8px; font-size: .62rem; letter-spacing: .06em; color: #8a6a2f; text-decoration: none; }
